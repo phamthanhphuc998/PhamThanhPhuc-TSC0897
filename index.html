@@ -1,0 +1,1351 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Draft Survey — CTY TNHH THÉP TÂY ĐÔ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   DESIGN TOKENS — Bảng màu chuyên nghiệp
+   Primary  : #0F172A (nền tối)   Navy deep-ocean
+   Accent 1 : #2563EB (xanh dương cobalt)
+   Accent 2 : #0EA5E9 (xanh trời sky)
+   Accent 3 : #10B981 (xanh lá emerald)  → kết quả
+   Accent 4 : #F59E0B (vàng amber)       → cảnh báo/trim
+   Accent 5 : #8B5CF6 (tím violet)       → departure
+   Neutral  : #1E293B surface, #334155 border, #94A3B8 label
+============================================================ */
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Inter',sans-serif;
+  background:#0a1628;
+  background-image:
+    radial-gradient(ellipse 80% 60% at 20% 0%,rgba(37,99,235,0.18) 0%,transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 100%,rgba(139,92,246,0.12) 0%,transparent 60%),
+    radial-gradient(ellipse 50% 40% at 50% 50%,rgba(14,165,233,0.07) 0%,transparent 70%);
+  min-height:100vh;
+  color:#e2e8f0;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:#0f172a;}
+::-webkit-scrollbar-thumb{background:#2563eb;border-radius:4px;}
+
+/* ── CARD ── */
+.card{
+  background:rgba(15,23,42,0.85);
+  border:1px solid rgba(148,163,184,0.12);
+  border-radius:18px;
+  box-shadow:0 4px 30px rgba(0,0,0,0.35),0 1px 0 rgba(255,255,255,0.04) inset;
+  backdrop-filter:blur(16px);
+}
+.card-inner{
+  background:rgba(30,41,59,0.7);
+  border:1px solid rgba(148,163,184,0.1);
+  border-radius:12px;
+}
+
+/* ── SECTION HEADER ── */
+.sec-hd{
+  display:flex;align-items:center;gap:10px;
+  padding:11px 16px;
+  border-radius:10px;
+  margin-bottom:18px;
+  font-weight:700;font-size:14px;letter-spacing:.3px;
+  position:relative;overflow:hidden;
+}
+.sec-hd::before{content:'';position:absolute;inset:0;opacity:.12;
+  background:linear-gradient(90deg,#fff 0%,transparent 100%);}
+.sec-hd-blue  {background:linear-gradient(135deg,#1e3a8a,#1d4ed8);border-left:3px solid #60a5fa;color:#bfdbfe;}
+.sec-hd-teal  {background:linear-gradient(135deg,#134e4a,#0f766e);border-left:3px solid #5eead4;color:#ccfbf1;}
+.sec-hd-amber {background:linear-gradient(135deg,#78350f,#b45309);border-left:3px solid #fbbf24;color:#fde68a;}
+.sec-hd-violet{background:linear-gradient(135deg,#3b0764,#6d28d9);border-left:3px solid #c4b5fd;color:#ede9fe;}
+.sec-hd-rose  {background:linear-gradient(135deg,#881337,#be123c);border-left:3px solid #fda4af;color:#ffe4e6;}
+.sec-hd-slate {background:linear-gradient(135deg,#1e293b,#334155);border-left:3px solid #94a3b8;color:#e2e8f0;}
+.sec-hd-green {background:linear-gradient(135deg,#14532d,#166534);border-left:3px solid #4ade80;color:#bbf7d0;}
+
+.step-num{
+  width:26px;height:26px;flex-shrink:0;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:800;
+  background:rgba(255,255,255,0.15);
+  border:1.5px solid rgba(255,255,255,0.3);
+}
+
+/* ── INPUTS ── */
+.lbl{font-size:11px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;}
+.inp{
+  width:100%;background:rgba(15,23,42,0.7);
+  border:1.5px solid rgba(148,163,184,0.18);
+  border-radius:8px;color:#f1f5f9;
+  padding:9px 12px;font-size:13.5px;font-family:'Inter',sans-serif;
+  transition:border-color .2s,box-shadow .2s;
+}
+.inp:focus{outline:none;border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,0.15);}
+.inp::placeholder{color:#475569;font-size:13px;}
+.inp[type=number]{font-weight:600;color:#93c5fd;}
+
+/* ── RESULT FIELDS ── */
+.res{
+  width:100%;border-radius:8px;padding:9px 12px;font-size:13.5px;font-weight:700;
+  border:1.5px solid;display:block;min-height:38px;
+}
+.res-green{background:rgba(16,185,129,0.08);border-color:rgba(16,185,129,0.25);color:#34d399;}
+.res-blue {background:rgba(37,99,235,0.08); border-color:rgba(37,99,235,0.25); color:#93c5fd;}
+.res-amber{background:rgba(245,158,11,0.08);border-color:rgba(245,158,11,0.25);color:#fcd34d;}
+.res-violet{background:rgba(139,92,246,0.08);border-color:rgba(139,92,246,0.25);color:#c4b5fd;}
+.res-rose {background:rgba(244,63,94,0.08); border-color:rgba(244,63,94,0.25); color:#fda4af;}
+.res-white{background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.12);color:#f1f5f9;}
+
+/* ── BUTTONS ── */
+.btn{
+  border:none;border-radius:10px;padding:10px 22px;
+  font-weight:700;font-size:13px;cursor:pointer;
+  transition:all .25s;letter-spacing:.3px;display:inline-flex;align-items:center;gap:7px;
+}
+.btn:hover{transform:translateY(-2px);}
+.btn:active{transform:translateY(0);}
+.btn-blue  {background:linear-gradient(135deg,#1d4ed8,#0ea5e9);color:#fff;box-shadow:0 4px 14px rgba(14,165,233,0.35);}
+.btn-blue:hover{box-shadow:0 6px 20px rgba(14,165,233,0.5);}
+.btn-green {background:linear-gradient(135deg,#059669,#10b981);color:#fff;box-shadow:0 4px 14px rgba(16,185,129,0.35);}
+.btn-green:hover{box-shadow:0 6px 20px rgba(16,185,129,0.5);}
+.btn-violet{background:linear-gradient(135deg,#6d28d9,#8b5cf6);color:#fff;box-shadow:0 4px 14px rgba(139,92,246,0.35);}
+.btn-violet:hover{box-shadow:0 6px 20px rgba(139,92,246,0.5);}
+.btn-amber {background:linear-gradient(135deg,#b45309,#f59e0b);color:#fff;box-shadow:0 4px 14px rgba(245,158,11,0.35);}
+.btn-amber:hover{box-shadow:0 6px 20px rgba(245,158,11,0.5);}
+.btn-rose  {background:linear-gradient(135deg,#be123c,#f43f5e);color:#fff;box-shadow:0 4px 14px rgba(244,63,94,0.35);}
+.btn-sm{padding:7px 16px;font-size:12px;border-radius:8px;}
+
+/* ── TABS ── */
+.tab-wrap{display:flex;gap:0;background:rgba(15,23,42,0.8);border:1px solid rgba(148,163,184,0.12);border-radius:14px;padding:5px;margin-bottom:24px;}
+.tab-btn{
+  flex:1;padding:11px 10px;border:none;border-radius:10px;
+  background:transparent;color:#64748b;font-weight:600;font-size:13px;
+  cursor:pointer;transition:all .25s;letter-spacing:.2px;
+}
+.tab-btn.active{background:linear-gradient(135deg,#1d4ed8,#0ea5e9);color:#fff;box-shadow:0 3px 12px rgba(14,165,233,0.4);}
+.tab-btn:hover:not(.active){background:rgba(255,255,255,0.06);color:#e2e8f0;}
+
+/* ── BADGE ── */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;border:1px solid;}
+.b-blue  {background:rgba(59,130,246,0.12);color:#93c5fd;border-color:rgba(59,130,246,0.25);}
+.b-green {background:rgba(16,185,129,0.12);color:#6ee7b7;border-color:rgba(16,185,129,0.25);}
+.b-amber {background:rgba(245,158,11,0.12);color:#fcd34d;border-color:rgba(245,158,11,0.25);}
+.b-rose  {background:rgba(244,63,94,0.12); color:#fda4af;border-color:rgba(244,63,94,0.25);}
+.b-violet{background:rgba(139,92,246,0.12);color:#c4b5fd;border-color:rgba(139,92,246,0.25);}
+.b-teal  {background:rgba(20,184,166,0.12);color:#5eead4;border-color:rgba(20,184,166,0.25);}
+
+/* ── SELECT ── */
+.sel{
+  width:100%;background:rgba(15,23,42,0.7);
+  border:1.5px solid rgba(148,163,184,0.18);
+  border-radius:8px;color:#f1f5f9;
+  padding:9px 12px;font-size:13.5px;font-family:'Inter',sans-serif;cursor:pointer;
+}
+.sel option{background:#1e293b;color:#f1f5f9;}
+.sel:focus{outline:none;border-color:#2563eb;}
+
+/* ── HYDROSTATIC TABLE ── */
+.ht{width:100%;border-collapse:collapse;font-size:12.5px;}
+.ht th{background:rgba(30,58,138,0.6);color:#bfdbfe;padding:9px 10px;text-align:center;border:1px solid rgba(148,163,184,0.12);font-weight:700;letter-spacing:.3px;font-size:11.5px;}
+.ht td{padding:7px 8px;text-align:center;border:1px solid rgba(148,163,184,0.08);color:#e2e8f0;}
+.ht tr:nth-child(even) td{background:rgba(255,255,255,0.02);}
+.ht tr:hover td{background:rgba(37,99,235,0.07);}
+.ht-name{font-weight:700;font-size:12px;text-align:left!important;padding-left:12px!important;}
+
+/* ── INFO BANNER ── */
+.info-bar{border-radius:9px;padding:9px 14px;font-size:12.5px;font-weight:500;display:flex;align-items:center;gap:8px;}
+.ib-blue  {background:rgba(37,99,235,0.1);  border:1px solid rgba(37,99,235,0.25);  color:#93c5fd;}
+.ib-amber {background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.25); color:#fcd34d;}
+.ib-green {background:rgba(16,185,129,0.1); border:1px solid rgba(16,185,129,0.25); color:#34d399;}
+.ib-rose  {background:rgba(244,63,94,0.1);  border:1px solid rgba(244,63,94,0.25);  color:#fda4af;}
+
+/* ── SUMMARY VALUE ── */
+.sv-big{font-size:26px;font-weight:900;line-height:1;}
+.sv-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#64748b;margin-bottom:4px;}
+.sv-unit{font-size:11px;color:#475569;margin-top:3px;}
+
+/* ── DIVIDER ── */
+.dvd{border:none;border-top:1px solid rgba(148,163,184,0.1);margin:14px 0;}
+
+/* ── HEADER WAVE ── */
+@keyframes waveAnim{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
+.wave-bar{
+  height:4px;
+  background:linear-gradient(90deg,#1d4ed8,#0ea5e9,#10b981,#0ea5e9,#1d4ed8);
+  background-size:300% 100%;
+  animation:waveAnim 4s ease infinite;
+}
+
+/* ── SHIP DIAGRAM ── */
+.ship-svg{width:100%;height:auto;}
+
+/* ── PRINT ── */
+@media print{
+  body,html{margin:0;padding:0;}
+  .no-print{display:none!important;}
+  @page{margin:14mm 14mm 18mm 14mm;size:A4;}
+}
+
+/* ── LAYOUT ── */
+.page{max-width:1280px;margin:0 auto;padding:20px 16px;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+.g4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:14px;}
+.g6{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;}
+@media(max-width:900px){.g4{grid-template-columns:1fr 1fr;}.g3{grid-template-columns:1fr 1fr;}.g6{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:600px){.g2,.g3,.g4,.g6{grid-template-columns:1fr;}}
+
+.flex-end{display:flex;justify-content:flex-end;margin-top:16px;gap:10px;}
+.flex-center{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;}
+.mb10{margin-bottom:10px;}
+.mb14{margin-bottom:14px;}
+.mb20{margin-bottom:20px;}
+.mt8{margin-top:8px;}
+.gap8{gap:8px;}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ═══════════════════ HEADER ═══════════════════ -->
+<div class="card mb-20" style="overflow:hidden;">
+  <div class="wave-bar"></div>
+  <div style="padding:32px 24px 28px;text-align:center;background:linear-gradient(180deg,rgba(30,58,138,0.25) 0%,transparent 100%);">
+    <div style="font-family:'Montserrat',sans-serif;font-size:30px;font-weight:900;letter-spacing:3px;color:#f1f5f9;text-shadow:0 2px 20px rgba(14,165,233,0.4);">
+      CTY TNHH THÉP TÂY ĐÔ
+    </div>
+    <div style="margin-top:8px;font-size:14px;font-weight:600;color:#7dd3fc;letter-spacing:1.5px;">
+      ⚓ &nbsp;PHẦN MỀM TÍNH TOÁN DRAFT SURVEY&nbsp; ⚓
+    </div>
+    <div style="margin-top:10px;display:inline-flex;align-items:center;gap:8px;background:rgba(14,165,233,0.08);border:1px solid rgba(14,165,233,0.2);border-radius:20px;padding:5px 16px;">
+      <span style="width:7px;height:7px;border-radius:50%;background:#10b981;display:inline-block;box-shadow:0 0 8px #10b981;"></span>
+      <span id="currentDateDisplay" style="font-size:12.5px;color:#94a3b8;font-weight:500;"></span>
+    </div>
+  </div>
+  <div class="wave-bar"></div>
+</div>
+
+<!-- ═══════════════════ THÔNG TIN TÀU ═══════════════════ -->
+<div class="card mb20" style="padding:24px;">
+  <div class="sec-hd sec-hd-blue">
+    <span style="font-size:18px;">📋</span>
+    <span>THÔNG TIN TÀU & HÀNG HÓA</span>
+  </div>
+  <div class="g3" style="margin-bottom:14px;">
+    <div><div class="lbl">Tên tàu (Vessel Name)</div><input class="inp" id="shipName" placeholder="Nhập tên tàu…"/></div>
+    <div><div class="lbl">IMO Number</div><input class="inp" id="imoNumber" placeholder="Nhập số IMO…"/></div>
+    <div><div class="lbl">Mặt hàng (Commodity)</div><input class="inp" id="cargo" placeholder="Nhập mặt hàng…"/></div>
+    <div><div class="lbl">Ngày tính toán</div><input class="inp" id="calcDate" type="date"/></div>
+    <div><div class="lbl">Cảng (Port)</div><input class="inp" id="portName" placeholder="Nhập tên cảng…"/></div>
+    <div><div class="lbl">Người giám định (Surveyor)</div><input class="inp" id="surveyor" placeholder="Nhập tên surveyor…"/></div>
+  </div>
+  <!-- Bill & Cân – nổi bật hơn -->
+  <div class="g2">
+    <div class="card-inner" style="padding:14px 18px;border-left:3px solid #8b5cf6;">
+      <div class="lbl" style="color:#c4b5fd;">Khối lượng Bill hàng (tấn)</div>
+      <input class="inp" id="billWeight" type="number" step="0.001" value="0" style="color:#c4b5fd;font-size:15px;font-weight:800;"/>
+    </div>
+    <div class="card-inner" style="padding:14px 18px;border-left:3px solid #10b981;">
+      <div class="lbl" style="color:#6ee7b7;">Khối lượng cân (tấn)</div>
+      <input class="inp" id="scaleWeight" type="number" step="0.001" value="0" style="color:#6ee7b7;font-size:15px;font-weight:800;"/>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ HẰNG SỐ TÀU ═══════════════════ -->
+<div class="card mb20" style="padding:24px;">
+  <div class="sec-hd sec-hd-slate">
+    <span style="font-size:18px;">⚓</span>
+    <span>HẰNG SỐ TÀU (SHIP CONSTANTS)</span>
+  </div>
+  <div class="g4">
+    <div><div class="lbl">LightShip (tấn)</div><input class="inp" id="lightShip" type="number" step="0.001" value="0"/></div>
+    <div><div class="lbl">Constants (tấn)</div><input class="inp" id="constants" type="number" step="0.001" value="0"/></div>
+    <div><div class="lbl">LBP (m)</div><input class="inp" id="lbp" type="number" step="0.001" value="0"/></div>
+    <div><div class="lbl">Mật độ chuẩn ρ<sub>std</sub> (t/m³)</div><input class="inp" id="rhoStd" type="number" step="0.001" value="1.025"/></div>
+  </div>
+</div>
+
+<!-- ═══════════════════ TABS ═══════════════════ -->
+<div class="tab-wrap">
+  <button class="tab-btn active" onclick="switchTab('arrival')" id="tab-arrival">🚢 &nbsp;TÀU VÀO CẢNG (ARRIVAL)</button>
+  <button class="tab-btn" onclick="switchTab('departure')" id="tab-departure">🛳️ &nbsp;TÀU RỜI CẢNG (DEPARTURE)</button>
+  <button class="tab-btn" onclick="switchTab('summary')" id="tab-summary">📊 &nbsp;TỔNG HỢP & KẾT QUẢ</button>
+</div>
+
+<!-- ╔══════════════════════════════════════════╗
+     ║            ARRIVAL TAB                   ║
+     ╚══════════════════════════════════════════╝ -->
+<div id="tab-content-arrival">
+
+<!-- Sơ đồ mớn nước -->
+<div class="card mb20" style="padding:22px;">
+  <div class="sec-hd sec-hd-blue"><span style="font-size:16px;">🚢</span><span>SƠ ĐỒ MỚN NƯỚC — TÀU VÀO CẢNG (ARRIVAL)</span></div>
+  <div id="shipDiagramArrival" style="width:100%;"></div>
+</div>
+
+<!-- BƯỚC 1 -->
+<div class="card mb20" style="padding:22px;">
+  <div class="sec-hd sec-hd-teal"><div class="step-num">1</div><span>ĐỌC MỚN TÀU (DRAFT READINGS) — ARRIVAL</span></div>
+  <div class="g3">
+    <!-- FORE -->
+    <div class="card-inner" style="padding:16px;border-top:2px solid #3b82f6;">
+      <div class="badge b-blue mb10" style="margin-bottom:12px;">🔵 MỚN MŨI (FORE)</div>
+      <div class="mb10"><div class="lbl">Fp — Port (Trái) m</div><input class="inp" id="a_fp" type="number" step="0.001" value="0" oninput="calcStep1('a')"/></div>
+      <div class="mb10"><div class="lbl">Fs — Starboard (Phải) m</div><input class="inp" id="a_fs" type="number" step="0.001" value="0" oninput="calcStep1('a')"/></div>
+      <div><div class="lbl">Fm — Trung bình m</div><div class="res res-blue" id="a_fm">0.000</div></div>
+    </div>
+    <!-- MID -->
+    <div class="card-inner" style="padding:16px;border-top:2px solid #10b981;">
+      <div class="badge b-green mb10" style="margin-bottom:12px;">🟢 MỚN GIỮA (MID)</div>
+      <div class="mb10"><div class="lbl">Mp — Port (Trái) m</div><input class="inp" id="a_mp" type="number" step="0.001" value="0" oninput="calcStep1('a')"/></div>
+      <div class="mb10"><div class="lbl">Ms — Starboard (Phải) m</div><input class="inp" id="a_ms" type="number" step="0.001" value="0" oninput="calcStep1('a')"/></div>
+      <div><div class="lbl">Mm — Trung bình m</div><div class="res res-green" id="a_mm_raw">0.000</div></div>
+    </div>
+    <!-- AFT -->
+    <div class="card-inner" style="padding:16px;border-top:2px solid #f59e0b;">
+      <div class="badge b-amber mb10" style="margin-bottom:12px;">🟡 MỚN LÁI (AFT)</div>
+      <div class="mb10"><div class="lbl">Ap — Port (Trái) m</div><input class="inp" id="a_ap" type="number" step="0.001" value="0" oninput="calcStep1('a')"/></div>
+      <div class="mb10"><div class="lbl">As — Starboard (Phải) m</div><input class="inp" id="a_as" type="number" step="0.001" value="0" oninput="calcStep1('a')"/></div>
+      <div><div class="lbl">Am — Trung bình m</div><div class="res res-amber" id="a_am">0.000</div></div>
+    </div>
+  </div>
+  <div class="flex-end"><button class="btn btn-blue btn-sm" onclick="calcStep1('a')">▶ Tính Bước 1</button></div>
+</div>
+
+<!-- BƯỚC 2 -->
+<div class="card mb20" style="padding:22px;">
+  <div class="sec-hd sec-hd-amber"><div class="step-num">2</div><span>ĐỘ CHÊNH MỚN (APPARENT TRIM) — ARRIVAL</span></div>
+  <div class="g2">
+    <div><div class="lbl">Apparent Trim = Am − Fm (m)</div><div class="res res-amber" id="a_apparentTrim">0.000</div></div>
+    <div><div class="lbl">Trạng thái</div><div class="res res-white" id="a_trimStatus">—</div></div>
+  </div>
+</div>
+
+<!-- BƯỚC 3 -->
+<div class="card mb20" style="padding:22px;">
+  <div class="sec-hd sec-hd-blue"><div class="step-num">3</div><span>HIỆU CHỈNH SANG MẶT PHẲNG VUÔNG GÓC — ARRIVAL</span></div>
+  <!-- df dm da LBM -->
+  <div class="g4 mb14">
+    <div><div class="lbl">df — Khoảng cách mớn mũi (m)</div><input class="inp" id="a_df" type="number" step="0.001" value="0" oninput="calcLBM('a')"/></div>
+    <div><div class="lbl">dm — Khoảng cách mớn giữa (m)</div><input class="inp" id="a_dm" type="number" step="0.001" value="0" oninput="calcLBM('a')"/></div>
+    <div><div class="lbl">da — Khoảng cách mớn lái (m)</div><input class="inp" id="a_da" type="number" step="0.001" value="0" oninput="calcLBM('a')"/></div>
+    <div><div class="lbl">LBM = LBP − da − df (m)</div><div class="res res-white" id="a_lbm">0.000</div></div>
+  </div>
+  <hr class="dvd">
+  <div class="g6">
+    <div><div class="lbl">FC (m)</div><div class="res res-blue" id="a_fc">0.000</div></div>
+    <div><div class="lbl">MC (m)</div><div class="res res-green" id="a_mc">0.000</div></div>
+    <div><div class="lbl">AC (m)</div><div class="res res-amber" id="a_ac">0.000</div></div>
+    <div><div class="lbl">Fcd (m)</div><div class="res res-blue" id="a_fcd">0.000</div></div>
+    <div><div class="lbl">Mcd (m)</div><div class="res res-green" id="a_mcd">0.000</div></div>
+    <div><div class="lbl">Acd (m)</div><div class="res res-amber" id="a_acd">0.000</div></div>
+  </div>
+  <div class="flex-end"><button class="btn btn-blue btn-sm" onclick="calcStep3('a')">▶ Tính Bước 3</button></div>
+</div>
+
+<!-- BƯỚC 4 -->
+<div class="card mb20" style="padding:22px;">
+  <div class="sec-hd sec-hd-rose"><div class="step-num">4</div><span>TRIM THỰC TẾ (TRUE TRIM) — ARRIVAL</span></div>
+  <div class="g2">
+    <div><div class="lbl">True Trim — TT = Acd − Fcd (m)</div><div class="res res-rose" id="a_trueTrim">0.000</div></div>
+    <div id="a_trimInfo" style="display:flex;align-items:flex-end;padding-bottom:2px;"></div>
+  </div>
+</div>
+
+<!-- BƯỚC 5–7 -->
+<div class="card mb20" style="padding:22px;">
+  <div class="sec-hd sec-hd-teal"><div class="step-num" style="font-size:9px;">5–7</div><span>MỚN TRUNG BÌNH HIỆU CHỈNH — ARRIVAL</span></div>
+  <div class="g3">
+    <div><div class="lbl">B5 · FAm = (Fcd + Acd) / 2 (m)</div><div class="res res-blue" id="a_fam">0.000</div></div>
+    <div><div class="lbl">B6 · MM = (FAm + Mcd) / 2 (m)</div><div class="res res-green" id="a_mm">0.000</div></div>
+    <div>
+      <div class="lbl" style="color:#fcd34d;">B7 · MMM = (MM + Mcd) / 2 → TRA BẢNG (m)</div>
+      <div class="res res-amber" id="a_mmm" style="font-size:16px;font-weight:900;">0.000</div>
+    </div>
+  </div>
+  <div class="flex-end"><button class="btn btn-blue btn-sm" onclick="calcStep57('a')">▶ Tính Bước 5–7</button></div>
+</div>
+
+<!-- BƯỚC 8 -->
+<div class="card mb20" style="padding:22px;">
+  <div class="sec-hd sec-hd-violet"><div class="step-num">8</div><span>NỘI SUY BẢNG THỦY TĨNH (HYDROSTATIC INTERPOLATION) — ARRIVAL</span></div>
+  <div class="info-bar ib-amber mb14">
+    <span>📌</span>
+    <span>MMM = <strong id="a_mmm_display">?</strong> m &nbsp;→&nbsp; Nhập 2 mớn kề từ bảng thủy tĩnh để nội suy</span>
+  </div>
+  <div style="overflow-x:auto;">
+    <table class="ht">
+      <thead>
+        <tr>
+          <th style="width:130px;text-align:left;padding-left:12px;">Thông số</th>
+          <th>D1 (m)</th><th>V1</th><th>D2 (m)</th><th>V2</th>
+          <th>Kết quả nội suy</th><th>Đơn vị</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="ht-name" style="color:#93c5fd;">Displacement</td>
+          <td><input class="inp" id="a_disp_d1" type="number" step="0.001" value="0" style="width:75px;padding:5px 7px;font-size:12px;"/></td>
+          <td><input class="inp" id="a_disp_v1" type="number" step="0.001" value="0" style="width:90px;padding:5px 7px;font-size:12px;"/></td>
+          <td><input class="inp" id="a_disp_d2" type="number" step="0.001" value="0" style="width:75px;padding:5px 7px;font-size:12px;"/></td>
+          <td><input class="inp" id="a_disp_v2" type="number" step="0.001" value="0" style="width:90px;padding:5px 7px;font-size:12px;"/></td>
+          <td><div class="res res-blue" id="a_disp_result" style="min-width:90px;font-size:13px;">0.000</div></td>
+          <td style="color:#64748b;font-size:11px;">tấn</td>
+        </tr>
+        <tr>
+          <td class="ht-name" style="color:#6ee7b7;">TPC</td>
+          <td><input class="inp" id="a_tpc_d1" type="number" step="0.001" value="0" style="width:75px;padding:5px 7px;font-size:12px;"/></td>
+          <td><input class="inp" id="a_tpc_v1" type="number" step="0.001" value="0" style="width:90px;padding:5px 7px;font-size:12px;"/></td>
+          <td><input class="inp" id="a_tpc_d2" type="number" step="0.001" value="0" style="width:75px;padding:5px 7px;font-size:12px;"/></td>
+          <td><input class="inp" id="a_tpc_v2" type="number" step="0.001" value="0" style="width:90px;padding:5px 7px;font-size:12px;"/></td>
+          <td><div class="res res-green" id="a_tpc_result" style="min-width:90px;font-size:13px;">0.000</div></td>
+          <td style="color:#64748b;font-size:11px;">t/cm</td>
+        </tr>
+        <tr>
+          <td class="ht-name" style="color:#fcd34d;">LCF</td>
+          <td><input class="inp" id="a_lcf_d1" type="number" step="0.001" value="0" style="width:75px;padding:5px 7px;font-size:12px;"/></td>
+          <td><input class="inp" id="a_lcf_v1" type="number" step="0.001" value="0" style="width:90px;padding:5px 7px;font-size:12px;"/></td>
+          <td><input class="inp" id="a_lcf_d2" type="number" step="0.001" value="0" style="width:75px;padding:5px 7px;font-size:12px;"/></td>
+          <td><input class="inp" id="a_lcf_v2" type="number" step="0.001" value="0" style="width:90px;padding:5px 7px;font-size:12px;"/></td>
+          <td><div class="res res-amber" id="a_lcf_result" style="min-width:90px;font-size:13px;">0.000</div></td>
+          <td style="color:#64748b;font-size:11px;">m từ FPP</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="flex-end"><button class="btn btn-violet btn-sm" onclick="calcStep8('a')">▶ Nội suy Bước 8</button></div>
+</div>
+
+<!-- BƯỚC 9 -->
+<div class="card mb20" style="padding:22px;">
+  <div class="sec-hd sec-hd-amber"><div class="step-num">9</div><span>HIỆU CHỈNH TRIM LẦN 1 (1ST TRIM CORRECTION) — ARRIVAL</span></div>
+  <div class="g2">
+    <div class="card-inner" style="padding:16px;">
+      <div class="mb10"><div class="lbl">Vị trí mớn sâu hơn (dựa trên True Trim)</div>
+        <select class="sel" id="a_deeperDraft">
+          <option value="">— Chọn —</option>
+          <option value="aft">Lái (AFT) — Trim dương</option>
+          <option value="fore">Mũi (FORE) — Trim âm</option>
+        </select>
+      </div>
+      <div class="mb10"><div class="lbl">LCF nội suy từ B8 (m từ FPP)</div>
+        <div class="res res-amber" id="a_lcfFromB8">0.000</div>
+      </div>
+      <div><div class="lbl">Vị trí thực tế của LCF</div>
+        <select class="sel" id="a_lcfPosition">
+          <option value="">— Chọn —</option>
+          <option value="aft">Về phía Lái (AFT)</option>
+          <option value="fore">Về phía Mũi (FORE)</option>
+          <option value="mid">Giữa tàu (MID)</option>
+        </select>
+      </div>
+    </div>
+    <div class="card-inner" style="padding:16px;">
+      <div class="mb10"><div class="lbl">Dấu của 1st Correction</div>
+        <div class="res res-white" id="a_1stSign">Chưa xác định</div>
+      </div>
+      <div><div class="lbl" style="color:#fcd34d;">1st Trim Correction (tấn)</div>
+        <div class="res res-amber" id="a_1stCorr" style="font-size:16px;font-weight:900;">0.000</div>
+      </div>
+    </div>
+  </div>
+  <div class="flex-end"><button class="btn btn-amber btn-sm" onclick="calcStep9('a')">▶ Tính Bước 9</button></div>
+</div>
+
+<!-- BƯỚC 10 -->
+<div class="card mb20" style="padding:22px;">
+  <div class="sec-hd sec-hd-teal"><div class="step-num">10</div><span>HIỆU CHỈNH TRIM LẦN 2 (2ND TRIM CORRECTION) — ARRIVAL</span></div>
+  <div class="info-bar ib-blue mb14">
+    <span>📐</span>
+    <span>MMM = <strong id="a_mmm_b10">?</strong> m &ensp;|&ensp; MMM+0.5 = <strong id="a_mmm_plus" style="color:#4ade80;">?</strong> m &ensp;|&ensp; MMM−0.5 = <strong id="a_mmm_minus" style="color:#f87171;">?</strong> m</span>
+  </div>
+  <div class="g2 mb14">
+    <!-- MTC+ -->
+    <div class="card-inner" style="padding:16px;border-top:2px solid #10b981;">
+      <div class="badge b-green mb10" style="margin-bottom:12px;">MTC tại MMM+0.5 = <span id="a_mmmPlus_label" style="margin-left:4px;font-weight:900;">?</span> m</div>
+      <div class="g2 mb10">
+        <div><div class="lbl">D1 (m)</div><input class="inp" id="a_mtcp_d1" type="number" step="0.001" value="0"/></div>
+        <div><div class="lbl">V1 (tm/cm)</div><input class="inp" id="a_mtcp_v1" type="number" step="0.001" value="0"/></div>
+        <div><div class="lbl">D2 (m)</div><input class="inp" id="a_mtcp_d2" type="number" step="0.001" value="0"/></div>
+        <div><div class="lbl">V2 (tm/cm)</div><input class="inp" id="a_mtcp_v2" type="number" step="0.001" value="0"/></div>
+      </div>
+      <div><div class="lbl" style="color:#4ade80;">MTC(MMM+0.5) (tm/cm)</div><div class="res res-green" id="a_mtcPlus" style="font-size:15px;">0.000</div></div>
+    </div>
+    <!-- MTC- -->
+    <div class="card-inner" style="padding:16px;border-top:2px solid #f43f5e;">
+      <div class="badge b-rose mb10" style="margin-bottom:12px;">MTC tại MMM−0.5 = <span id="a_mmmMinus_label" style="margin-left:4px;font-weight:900;">?</span> m</div>
+      <div class="g2 mb10">
+        <div><div class="lbl">D1 (m)</div><input class="inp" id="a_mtcm_d1" type="number" step="0.001" value="0"/></div>
+        <div><div class="lbl">V1 (tm/cm)</div><input class="inp" id="a_mtcm_v1" type="number" step="0.001" value="0"/></div>
+        <div><div class="lbl">D2 (m)</div><input class="inp" id="a_mtcm_d2" type="number" step="0.001" value="0"/></div>
+        <div><div class="lbl">V2 (tm/cm)</div><input class="inp" id="a_mtcm_v2" type="number" step="0.001" value="0"/></div>
+      </div>
+      <div><div class="lbl" style="color:#fda4af;">MTC(MMM−0.5) (tm/cm)</div><div class="res res-rose" id="a_mtcMinus" style="font-size:15px;">0.000</div></div>
+    </div>
+  </div>
+  <div class="g2">
+    <div><div class="lbl">ΔMTC = MTC(+0.5) − MTC(−0.5) (tm/cm)</div><div class="res res-teal" style="background:rgba(20,184,166,0.08);border:1.5px solid rgba(20,184,166,0.25);color:#5eead4;border-radius:8px;padding:9px 12px;font-weight:700;" id="a_deltaMTC">0.000</div></div>
+    <div><div class="lbl" style="color:#4ade80;">2nd Trim Correction [+] (tấn)</div><div class="res res-green" id="a_2ndCorr" style="font-size:16px;font-weight:900;">0.000</div></div>
+  </div>
+  <div class="flex-end"><button class="btn btn-blue btn-sm" onclick="calcStep10('a')">▶ Tính Bước 10</button></div>
+</div>
+
+<!-- BƯỚC 11 -->
+<div class="card mb20" style="padding:22px;">
+  <div class="sec-hd sec-hd-slate"><div class="step-num">11</div><span>HIỆU CHỈNH MẬT ĐỘ NƯỚC (DENSITY CORRECTION) — ARRIVAL</span></div>
+  <div class="g4">
+    <div><div class="lbl">Mật độ nước thực tế ρ (t/m³)</div><input class="inp" id="a_rho" type="number" step="0.0001" value="1.025" style="color:#5eead4;font-weight:800;"/></div>
+    <div><div class="lbl">Displacement từ B8 (tấn)</div><div class="res res-blue" id="a_dispFromB8">0.000</div></div>
+    <div><div class="lbl">Density Correction (tấn)</div><div class="res res-white" id="a_densCorr">0.000</div></div>
+    <div><div class="lbl" style="color:#fcd34d;">Disp + 1st + 2nd + Dcorr (tấn)</div><div class="res res-amber" id="a_dispTotal" style="font-size:15px;font-weight:900;">0.000</div></div>
+  </div>
+  <div class="flex-end"><button class="btn btn-blue btn-sm" onclick="calcStep11('a')">▶ Tính Bước 11</button></div>
+</div>
+
+<!-- BƯỚC 12 -->
+<div class="card mb20" style="padding:22px;">
+  <div class="sec-hd sec-hd-green"><div class="step-num">12</div><span>TRỌNG LƯỢNG CHẤT LỎNG & KẾT QUẢ (LIQUIDS & RESULT) — ARRIVAL</span></div>
+  <div class="g4 mb14">
+    <div><div class="lbl">Ballast (tấn)</div><input class="inp" id="a_ballast" type="number" step="0.001" value="0"/></div>
+    <div><div class="lbl">Fuel Oil (tấn)</div><input class="inp" id="a_fuelOil" type="number" step="0.001" value="0"/></div>
+    <div><div class="lbl">Diesel Oil (tấn)</div><input class="inp" id="a_dieselOil" type="number" step="0.001" value="0"/></div>
+    <div><div class="lbl">Fresh Water (tấn)</div><input class="inp" id="a_freshWater" type="number" step="0.001" value="0"/></div>
+  </div>
+  <hr class="dvd">
+  <div class="g4">
+    <div><div class="lbl">LightShip (tấn)</div><div class="res res-white" id="a_lightShipDisplay">0.000</div></div>
+    <div><div class="lbl">Constants (tấn)</div><div class="res res-white" id="a_constantsDisplay">0.000</div></div>
+    <div><div class="lbl">Weight on Board (tấn)</div><div class="res res-blue" id="a_wob">0.000</div></div>
+    <div>
+      <div class="lbl" style="color:#4ade80;font-size:12px;font-weight:800;">Δin — KHỐI LƯỢNG HÀNG (tấn)</div>
+      <div class="res res-green" id="a_deltaIn" style="font-size:20px;font-weight:900;border-width:2px;">0.000</div>
+    </div>
+  </div>
+  <div class="flex-end"><button class="btn btn-green" onclick="calcStep12('a')">✅ Tính Bước 12 — ARRIVAL</button></div>
+</div>
+</div><!-- /arrival -->
+
+<!-- ╔══════════════════════════════════════════╗
+     ║           DEPARTURE TAB                  ║
+     ╚══════════════════════════════════════════╝ -->
+<div id="tab-content-departure" style="display:none;">
+
+<div class="card mb20" style="padding:22px;">
+  <div class="sec-hd sec-hd-violet"><span style="font-size:16px;">🛳️</span><span>SƠ ĐỒ MỚN NƯỚC — TÀU RỜI CẢNG (DEPARTURE)</span></div>
+  <div id="shipDiagramDeparture" style="width:100%;"></div>
+</div>
+
+<!-- BƯỚC 1 DEP -->
+<div class="card mb20" style="padding:22px;">
+  <div class="sec-hd sec-hd-violet"><div class="step-num">1</div><span>ĐỌC MỚN TÀU (DRAFT READINGS) — DEPARTURE</span></div>
+  <div class="g3">
+    <div class="card-inner" style="padding:16px;border-top:2px solid #8b5cf6;">
+      <div class="badge b-violet mb10" style="margin-bottom:12px;">🔵 MỚN MŨI (FORE)</div>
+      <div class="mb10"><div class="lbl">Fp — Port m</div><input class="inp" id="d_fp" type="number" step="0.001" value="0" oninput="calcStep1('d')"/></div>
+      <div class="mb10"><div class="lbl">Fs — Starboard m</div><input class="inp" id="d_fs" type="number" step="0.001" value="0" oninput="calcStep1('d')"/></div>
+      <div><div class="lbl">Fm — Trung bình m</div><div class="res res-violet" id="d_fm">0.000</div></div>
+    </div>
+    <div class="card-inner" style="padding:16px;border-top:2px solid #a78bfa;">
+      <div class="badge b-violet mb10" style="margin-bottom:12px;">🟢 MỚN GIỮA (MID)</div>
+      <div class="mb10"><div class="lbl">Mp — Port m</div><input class="inp" id="d_mp" type="number" step="0.001" value="0" oninput="calcStep1('d')"/></div>
+      <div class="mb10"><div class="lbl">Ms — Starboard m</div><input class="inp" id="d_ms" type="number" step="0.001" value="0" oninput="calcStep1('d')"/></div>
+      <div><div class="lbl">Mm — Trung bình m</div><div class="res res-violet" id="d_mm_raw">0.000</div></div>
+    </div>
+    <div class="card-inner" style="padding:16px;border-top:2px solid #c4b5fd;">
+      <div class="badge b-violet mb10" style="margin-bottom:12px;">🟡 MỚN LÁI (AFT)</div>
+      <div class="mb10"><div class="lbl">Ap — Port m</div><input class="inp" id="d_ap" type="number" step="0.001" value="0" oninput="calcStep1('d')"/></div>
+      <div class="mb10"><div class="lbl">As — Starboard m</div><input class="inp" id="d_as" type="number" step="0.001" value="0" oninput="calcStep1('d')"/></div>
+      <div><div class="lbl">Am — Trung bình m</div><div class="res res-violet" id="d_am">0.000</div></div>
+    </div>
+  </div>
+  <div class="flex-end"><button class="btn btn-violet btn-sm" onclick="calcStep1('d')">▶ Tính Bước 1</button></div>
+</div>
+
+<div class="card mb20" style="padding:22px;">
+  <div class="sec-hd sec-hd-amber"><div class="step-num">2</div><span>ĐỘ CHÊNH MỚN (APPARENT TRIM) — DEPARTURE</span></div>
+  <div class="g2">
+    <div><div class="lbl">Apparent Trim (m)</div><div class="res res-amber" id="d_apparentTrim">0.000</div></div>
+    <div><div class="lbl">Trạng thái</div><div class="res res-white" id="d_trimStatus">—</div></div>
+  </div>
+</div>
+
+<div class="card mb20" style="padding:22px;">
+  <div class="sec-hd sec-hd-violet"><div class="step-num">3</div><span>HIỆU CHỈNH SANG MẶT PHẲNG VUÔNG GÓC — DEPARTURE</span></div>
+  <div class="g4 mb14">
+    <div><div class="lbl">df (m)</div><input class="inp" id="d_df" type="number" step="0.001" value="0" oninput="calcLBM('d')"/></div>
+    <div><div class="lbl">dm (m)</div><input class="inp" id="d_dm" type="number" step="0.001" value="0" oninput="calcLBM('d')"/></div>
+    <div><div class="lbl">da (m)</div><input class="inp" id="d_da" type="number" step="0.001" value="0" oninput="calcLBM('d')"/></div>
+    <div><div class="lbl">LBM = LBP − da − df (m)</div><div class="res res-white" id="d_lbm">0.000</div></div>
+  </div>
+  <hr class="dvd">
+  <div class="g6">
+    <div><div class="lbl">FC (m)</div><div class="res res-violet" id="d_fc">0.000</div></div>
+    <div><div class="lbl">MC (m)</div><div class="res res-violet" id="d_mc">0.000</div></div>
+    <div><div class="lbl">AC (m)</div><div class="res res-violet" id="d_ac">0.000</div></div>
+    <div><div class="lbl">Fcd (m)</div><div class="res res-violet" id="d_fcd">0.000</div></div>
+    <div><div class="lbl">Mcd (m)</div><div class="res res-violet" id="d_mcd">0.000</div></div>
+    <div><div class="lbl">Acd (m)</div><div class="res res-violet" id="d_acd">0.000</div></div>
+  </div>
+  <div class="flex-end"><button class="btn btn-violet btn-sm" onclick="calcStep3('d')">▶ Tính Bước 3</button></div>
+</div>
+
+<div class="card mb20" style="padding:22px;">
+  <div class="sec-hd sec-hd-rose"><div class="step-num">4</div><span>TRIM THỰC TẾ (TRUE TRIM) — DEPARTURE</span></div>
+  <div class="g2">
+    <div><div class="lbl">True Trim — TT (m)</div><div class="res res-rose" id="d_trueTrim">0.000</div></div>
+    <div id="d_trimInfo" style="display:flex;align-items:flex-end;padding-bottom:2px;"></div>
+  </div>
+</div>
+
+<div class="card mb20" style="padding:22px;">
+  <div class="sec-hd sec-hd-violet"><div class="step-num" style="font-size:9px;">5–7</div><span>MỚN TRUNG BÌNH HIỆU CHỈNH — DEPARTURE</span></div>
+  <div class="g3">
+    <div><div class="lbl">B5 · FAm (m)</div><div class="res res-violet" id="d_fam">0.000</div></div>
+    <div><div class="lbl">B6 · MM (m)</div><div class="res res-violet" id="d_mm">0.000</div></div>
+    <div><div class="lbl" style="color:#fcd34d;">B7 · MMM → TRA BẢNG (m)</div><div class="res res-amber" id="d_mmm" style="font-size:16px;font-weight:900;">0.000</div></div>
+  </div>
+  <div class="flex-end"><button class="btn btn-violet btn-sm" onclick="calcStep57('d')">▶ Tính Bước 5–7</button></div>
+</div>
+
+<div class="card mb20" style="padding:22px;">
+  <div class="sec-hd sec-hd-violet"><div class="step-num">8</div><span>NỘI SUY BẢNG THỦY TĨNH — DEPARTURE</span></div>
+  <div class="info-bar ib-amber mb14"><span>📌</span><span>MMM = <strong id="d_mmm_display">?</strong> m</span></div>
+  <div style="overflow-x:auto;">
+    <table class="ht">
+      <thead><tr><th style="width:130px;text-align:left;padding-left:12px;">Thông số</th><th>D1</th><th>V1</th><th>D2</th><th>V2</th><th>Kết quả</th><th>Đơn vị</th></tr></thead>
+      <tbody>
+        <tr><td class="ht-name" style="color:#c4b5fd;">Displacement</td>
+          <td><input class="inp" id="d_disp_d1" type="number" step="0.001" value="0" style="width:75px;padding:5px 7px;font-size:12px;"/></td>
+          <td><input class="inp" id="d_disp_v1" type="number" step="0.001" value="0" style="width:90px;padding:5px 7px;font-size:12px;"/></td>
+          <td><input class="inp" id="d_disp_d2" type="number" step="0.001" value="0" style="width:75px;padding:5px 7px;font-size:12px;"/></td>
+          <td><input class="inp" id="d_disp_v2" type="number" step="0.001" value="0" style="width:90px;padding:5px 7px;font-size:12px;"/></td>
+          <td><div class="res res-violet" id="d_disp_result" style="min-width:90px;font-size:13px;">0.000</div></td>
+          <td style="color:#64748b;font-size:11px;">tấn</td></tr>
+        <tr><td class="ht-name" style="color:#c4b5fd;">TPC</td>
+          <td><input class="inp" id="d_tpc_d1" type="number" step="0.001" value="0" style="width:75px;padding:5px 7px;font-size:12px;"/></td>
+          <td><input class="inp" id="d_tpc_v1" type="number" step="0.001" value="0" style="width:90px;padding:5px 7px;font-size:12px;"/></td>
+          <td><input class="inp" id="d_tpc_d2" type="number" step="0.001" value="0" style="width:75px;padding:5px 7px;font-size:12px;"/></td>
+          <td><input class="inp" id="d_tpc_v2" type="number" step="0.001" value="0" style="width:90px;padding:5px 7px;font-size:12px;"/></td>
+          <td><div class="res res-violet" id="d_tpc_result" style="min-width:90px;font-size:13px;">0.000</div></td>
+          <td style="color:#64748b;font-size:11px;">t/cm</td></tr>
+        <tr><td class="ht-name" style="color:#c4b5fd;">LCF</td>
+          <td><input class="inp" id="d_lcf_d1" type="number" step="0.001" value="0" style="width:75px;padding:5px 7px;font-size:12px;"/></td>
+          <td><input class="inp" id="d_lcf_v1" type="number" step="0.001" value="0" style="width:90px;padding:5px 7px;font-size:12px;"/></td>
+          <td><input class="inp" id="d_lcf_d2" type="number" step="0.001" value="0" style="width:75px;padding:5px 7px;font-size:12px;"/></td>
+          <td><input class="inp" id="d_lcf_v2" type="number" step="0.001" value="0" style="width:90px;padding:5px 7px;font-size:12px;"/></td>
+          <td><div class="res res-violet" id="d_lcf_result" style="min-width:90px;font-size:13px;">0.000</div></td>
+          <td style="color:#64748b;font-size:11px;">m từ FPP</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="flex-end"><button class="btn btn-violet btn-sm" onclick="calcStep8('d')">▶ Nội suy Bước 8</button></div>
+</div>
+
+<div class="card mb20" style="padding:22px;">
+  <div class="sec-hd sec-hd-amber"><div class="step-num">9</div><span>HIỆU CHỈNH TRIM LẦN 1 — DEPARTURE</span></div>
+  <div class="g2">
+    <div class="card-inner" style="padding:16px;">
+      <div class="mb10"><div class="lbl">Vị trí mớn sâu hơn</div>
+        <select class="sel" id="d_deeperDraft"><option value="">— Chọn —</option><option value="aft">Lái (AFT)</option><option value="fore">Mũi (FORE)</option></select></div>
+      <div class="mb10"><div class="lbl">LCF từ B8 (m)</div><div class="res res-amber" id="d_lcfFromB8">0.000</div></div>
+      <div><div class="lbl">Vị trí thực tế LCF</div>
+        <select class="sel" id="d_lcfPosition"><option value="">— Chọn —</option><option value="aft">Về phía Lái</option><option value="fore">Về phía Mũi</option><option value="mid">Giữa tàu</option></select></div>
+    </div>
+    <div class="card-inner" style="padding:16px;">
+      <div class="mb10"><div class="lbl">Dấu của 1st Correction</div><div class="res res-white" id="d_1stSign">Chưa xác định</div></div>
+      <div><div class="lbl" style="color:#fcd34d;">1st Trim Correction (tấn)</div><div class="res res-amber" id="d_1stCorr" style="font-size:16px;font-weight:900;">0.000</div></div>
+    </div>
+  </div>
+  <div class="flex-end"><button class="btn btn-amber btn-sm" onclick="calcStep9('d')">▶ Tính Bước 9</button></div>
+</div>
+
+<div class="card mb20" style="padding:22px;">
+  <div class="sec-hd sec-hd-teal"><div class="step-num">10</div><span>HIỆU CHỈNH TRIM LẦN 2 — DEPARTURE</span></div>
+  <div class="info-bar ib-blue mb14"><span>📐</span>
+    <span>MMM = <strong id="d_mmm_b10">?</strong> m &ensp;|&ensp; MMM+0.5 = <strong id="d_mmm_plus" style="color:#4ade80;">?</strong> m &ensp;|&ensp; MMM−0.5 = <strong id="d_mmm_minus" style="color:#f87171;">?</strong> m</span>
+  </div>
+  <div class="g2 mb14">
+    <div class="card-inner" style="padding:16px;border-top:2px solid #10b981;">
+      <div class="badge b-green mb10" style="margin-bottom:12px;">MTC tại MMM+0.5 = <span id="d_mmmPlus_label" style="margin-left:4px;font-weight:900;">?</span> m</div>
+      <div class="g2 mb10">
+        <div><div class="lbl">D1</div><input class="inp" id="d_mtcp_d1" type="number" step="0.001" value="0"/></div>
+        <div><div class="lbl">V1</div><input class="inp" id="d_mtcp_v1" type="number" step="0.001" value="0"/></div>
+        <div><div class="lbl">D2</div><input class="inp" id="d_mtcp_d2" type="number" step="0.001" value="0"/></div>
+        <div><div class="lbl">V2</div><input class="inp" id="d_mtcp_v2" type="number" step="0.001" value="0"/></div>
+      </div>
+      <div><div class="lbl" style="color:#4ade80;">MTC(MMM+0.5) (tm/cm)</div><div class="res res-green" id="d_mtcPlus">0.000</div></div>
+    </div>
+    <div class="card-inner" style="padding:16px;border-top:2px solid #f43f5e;">
+      <div class="badge b-rose mb10" style="margin-bottom:12px;">MTC tại MMM−0.5 = <span id="d_mmmMinus_label" style="margin-left:4px;font-weight:900;">?</span> m</div>
+      <div class="g2 mb10">
+        <div><div class="lbl">D1</div><input class="inp" id="d_mtcm_d1" type="number" step="0.001" value="0"/></div>
+        <div><div class="lbl">V1</div><input class="inp" id="d_mtcm_v1" type="number" step="0.001" value="0"/></div>
+        <div><div class="lbl">D2</div><input class="inp" id="d_mtcm_d2" type="number" step="0.001" value="0"/></div>
+        <div><div class="lbl">V2</div><input class="inp" id="d_mtcm_v2" type="number" step="0.001" value="0"/></div>
+      </div>
+      <div><div class="lbl" style="color:#fda4af;">MTC(MMM−0.5) (tm/cm)</div><div class="res res-rose" id="d_mtcMinus">0.000</div></div>
+    </div>
+  </div>
+  <div class="g2">
+    <div><div class="lbl">ΔMTC (tm/cm)</div><div style="background:rgba(20,184,166,0.08);border:1.5px solid rgba(20,184,166,0.25);color:#5eead4;border-radius:8px;padding:9px 12px;font-weight:700;" id="d_deltaMTC">0.000</div></div>
+    <div><div class="lbl" style="color:#4ade80;">2nd Trim Correction [+] (tấn)</div><div class="res res-green" id="d_2ndCorr" style="font-size:16px;font-weight:900;">0.000</div></div>
+  </div>
+  <div class="flex-end"><button class="btn btn-blue btn-sm" onclick="calcStep10('d')">▶ Tính Bước 10</button></div>
+</div>
+
+<div class="card mb20" style="padding:22px;">
+  <div class="sec-hd sec-hd-slate"><div class="step-num">11</div><span>HIỆU CHỈNH MẬT ĐỘ NƯỚC — DEPARTURE</span></div>
+  <div class="g4">
+    <div><div class="lbl">Mật độ nước ρ (t/m³)</div><input class="inp" id="d_rho" type="number" step="0.0001" value="1.025" style="color:#5eead4;font-weight:800;"/></div>
+    <div><div class="lbl">Displacement từ B8 (tấn)</div><div class="res res-violet" id="d_dispFromB8">0.000</div></div>
+    <div><div class="lbl">Density Correction (tấn)</div><div class="res res-white" id="d_densCorr">0.000</div></div>
+    <div><div class="lbl" style="color:#fcd34d;">Disp + 1st + 2nd + Dcorr (tấn)</div><div class="res res-amber" id="d_dispTotal" style="font-size:15px;font-weight:900;">0.000</div></div>
+  </div>
+  <div class="flex-end"><button class="btn btn-violet btn-sm" onclick="calcStep11('d')">▶ Tính Bước 11</button></div>
+</div>
+
+<div class="card mb20" style="padding:22px;">
+  <div class="sec-hd sec-hd-green"><div class="step-num">12</div><span>TRỌNG LƯỢNG CHẤT LỎNG & KẾT QUẢ — DEPARTURE</span></div>
+  <div class="g4 mb14">
+    <div><div class="lbl">Ballast (tấn)</div><input class="inp" id="d_ballast" type="number" step="0.001" value="0"/></div>
+    <div><div class="lbl">Fuel Oil (tấn)</div><input class="inp" id="d_fuelOil" type="number" step="0.001" value="0"/></div>
+    <div><div class="lbl">Diesel Oil (tấn)</div><input class="inp" id="d_dieselOil" type="number" step="0.001" value="0"/></div>
+    <div><div class="lbl">Fresh Water (tấn)</div><input class="inp" id="d_freshWater" type="number" step="0.001" value="0"/></div>
+  </div>
+  <hr class="dvd">
+  <div class="g4">
+    <div><div class="lbl">LightShip (tấn)</div><div class="res res-white" id="d_lightShipDisplay">0.000</div></div>
+    <div><div class="lbl">Constants (tấn)</div><div class="res res-white" id="d_constantsDisplay">0.000</div></div>
+    <div><div class="lbl">Weight on Board (tấn)</div><div class="res res-violet" id="d_wob">0.000</div></div>
+    <div>
+      <div class="lbl" style="color:#4ade80;font-size:12px;font-weight:800;">Δout — KHỐI LƯỢNG HÀNG (tấn)</div>
+      <div class="res res-green" id="d_deltaOut" style="font-size:20px;font-weight:900;border-width:2px;">0.000</div>
+    </div>
+  </div>
+  <div class="flex-end"><button class="btn btn-green" onclick="calcStep12('d')">✅ Tính Bước 12 — DEPARTURE</button></div>
+</div>
+</div><!-- /departure -->
+
+<!-- ╔══════════════════════════════════════════╗
+     ║            SUMMARY TAB                   ║
+     ╚══════════════════════════════════════════╝ -->
+<div id="tab-content-summary" style="display:none;">
+
+<!-- So sánh ARRIVAL vs DEPARTURE -->
+<div class="g2 mb20">
+  <!-- ARRIVAL card -->
+  <div class="card" style="padding:22px;border-top:3px solid #2563eb;">
+    <div style="font-size:12px;font-weight:800;color:#60a5fa;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;">🚢 Tàu vào cảng (Arrival)</div>
+    <div class="g2" style="gap:10px;">
+      <div style="background:rgba(37,99,235,0.08);border:1px solid rgba(37,99,235,0.2);border-radius:10px;padding:14px;text-align:center;">
+        <div class="sv-label">MMM</div><div class="sv-big" style="color:#93c5fd;" id="sum_a_mmm">—</div><div class="sv-unit">m</div>
+      </div>
+      <div style="background:rgba(37,99,235,0.08);border:1px solid rgba(37,99,235,0.2);border-radius:10px;padding:14px;text-align:center;">
+        <div class="sv-label">True Trim</div><div class="sv-big" style="color:#93c5fd;" id="sum_a_tt">—</div><div class="sv-unit">m</div>
+      </div>
+      <div style="background:rgba(37,99,235,0.08);border:1px solid rgba(37,99,235,0.2);border-radius:10px;padding:14px;text-align:center;">
+        <div class="sv-label">Displacement</div><div class="sv-big" style="color:#93c5fd;" id="sum_a_disp">—</div><div class="sv-unit">tấn</div>
+      </div>
+      <div style="background:rgba(16,185,129,0.1);border:1.5px solid rgba(16,185,129,0.3);border-radius:10px;padding:14px;text-align:center;">
+        <div class="sv-label" style="color:#6ee7b7;">Δin Hàng hóa</div><div class="sv-big" style="color:#34d399;" id="sum_a_delta">—</div><div class="sv-unit">tấn</div>
+      </div>
+    </div>
+  </div>
+  <!-- DEPARTURE card -->
+  <div class="card" style="padding:22px;border-top:3px solid #8b5cf6;">
+    <div style="font-size:12px;font-weight:800;color:#a78bfa;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;">🛳️ Tàu rời cảng (Departure)</div>
+    <div class="g2" style="gap:10px;">
+      <div style="background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.2);border-radius:10px;padding:14px;text-align:center;">
+        <div class="sv-label">MMM</div><div class="sv-big" style="color:#c4b5fd;" id="sum_d_mmm">—</div><div class="sv-unit">m</div>
+      </div>
+      <div style="background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.2);border-radius:10px;padding:14px;text-align:center;">
+        <div class="sv-label">True Trim</div><div class="sv-big" style="color:#c4b5fd;" id="sum_d_tt">—</div><div class="sv-unit">m</div>
+      </div>
+      <div style="background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.2);border-radius:10px;padding:14px;text-align:center;">
+        <div class="sv-label">Displacement</div><div class="sv-big" style="color:#c4b5fd;" id="sum_d_disp">—</div><div class="sv-unit">tấn</div>
+      </div>
+      <div style="background:rgba(245,158,11,0.1);border:1.5px solid rgba(245,158,11,0.3);border-radius:10px;padding:14px;text-align:center;">
+        <div class="sv-label" style="color:#fcd34d;">Δout Hàng hóa</div><div class="sv-big" style="color:#fbbf24;" id="sum_d_delta">—</div><div class="sv-unit">tấn</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- KẾT QUẢ CUỐI -->
+<div class="card mb20" style="padding:26px;border:2px solid rgba(16,185,129,0.3);background:linear-gradient(135deg,rgba(16,185,129,0.04),rgba(37,99,235,0.04));">
+  <div style="text-align:center;font-size:13px;font-weight:800;color:#34d399;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:20px;">📈 KẾT QUẢ CUỐI CÙNG — KHỐI LƯỢNG HÀNG HÓA</div>
+  <!-- Row 1: delta in/out/cargo -->
+  <div class="g3 mb14" style="gap:12px;">
+    <div style="background:rgba(37,99,235,0.1);border:1px solid rgba(37,99,235,0.25);border-radius:12px;padding:18px;text-align:center;">
+      <div class="sv-label">Δin (Tàu vào cảng)</div>
+      <div class="sv-big" style="color:#93c5fd;font-size:28px;" id="final_deltaIn">—</div>
+      <div class="sv-unit">tấn</div>
+    </div>
+    <div style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.25);border-radius:12px;padding:18px;text-align:center;">
+      <div class="sv-label">Δout (Tàu rời cảng)</div>
+      <div class="sv-big" style="color:#c4b5fd;font-size:28px;" id="final_deltaOut">—</div>
+      <div class="sv-unit">tấn</div>
+    </div>
+    <div style="background:rgba(16,185,129,0.12);border:2px solid rgba(16,185,129,0.4);border-radius:12px;padding:18px;text-align:center;box-shadow:0 0 30px rgba(16,185,129,0.1);">
+      <div class="sv-label" style="color:#6ee7b7;font-size:11px;font-weight:800;">Δcargo = Δin − Δout</div>
+      <div class="sv-big" style="color:#10b981;font-size:34px;font-weight:900;" id="final_deltaCargo">—</div>
+      <div class="sv-unit" style="color:#6ee7b7;">tấn</div>
+    </div>
+  </div>
+  <!-- Row 2: Bill / Scale / Compare -->
+  <div class="g3" style="gap:12px;">
+    <div style="background:rgba(168,85,247,0.08);border:1px solid rgba(168,85,247,0.2);border-radius:12px;padding:16px;text-align:center;">
+      <div class="sv-label">Khối lượng Bill hàng</div>
+      <div class="sv-big" style="color:#d8b4fe;font-size:24px;" id="final_bill">—</div>
+      <div class="sv-unit">tấn</div>
+    </div>
+    <div style="background:rgba(20,184,166,0.08);border:1px solid rgba(20,184,166,0.2);border-radius:12px;padding:16px;text-align:center;">
+      <div class="sv-label">Khối lượng cân</div>
+      <div class="sv-big" style="color:#5eead4;font-size:24px;" id="final_scale">—</div>
+      <div class="sv-unit">tấn</div>
+    </div>
+    <div id="final_compare_box" style="border-radius:12px;padding:16px;text-align:center;background:rgba(148,163,184,0.08);border:1px solid rgba(148,163,184,0.2);">
+      <div class="sv-label">Hàng đo mớn vs Bill (chênh lệch)</div>
+      <div class="sv-big" style="font-size:22px;" id="final_compare">—</div>
+      <div style="font-size:13px;font-weight:700;margin-top:2px;" id="final_compare_pct">—</div>
+      <div style="font-size:12px;margin-top:6px;font-weight:600;" id="final_compare_status"></div>
+    </div>
+  </div>
+  <div style="display:flex;justify-content:center;margin-top:18px;">
+    <button class="btn btn-green" onclick="updateSummary()">🔄 Cập nhật tổng hợp</button>
+  </div>
+</div>
+
+<!-- IN BÁO CÁO -->
+<div class="card mb20" style="padding:22px;">
+  <div class="sec-hd sec-hd-violet"><span style="font-size:18px;">🖨️</span><span>IN BIÊN BẢN GIÁM ĐỊNH MỚN NƯỚC</span></div>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
+    <button class="btn btn-blue" onclick="printReport('arrival')">🖨️ Biên bản Tàu vào (Arrival)</button>
+    <button class="btn btn-violet" onclick="printReport('departure')">🖨️ Biên bản Tàu rời (Departure)</button>
+    <button class="btn btn-green" onclick="printReport('summary')">🖨️ Tổng hợp & Kết quả</button>
+  </div>
+</div>
+</div><!-- /summary -->
+
+<!-- FOOTER -->
+<div class="card" style="padding:18px 24px;margin-top:8px;text-align:center;background:linear-gradient(135deg,rgba(30,58,138,0.3),rgba(15,23,42,0.8));">
+  <div class="wave-bar" style="border-radius:4px;margin-bottom:14px;"></div>
+  <div style="font-family:'Montserrat',sans-serif;font-size:16px;font-weight:900;color:#f1f5f9;letter-spacing:2px;">CTY TNHH THÉP TÂY ĐÔ</div>
+  <div style="font-size:12px;color:#60a5fa;margin-top:4px;">Draft Survey Calculation System © 2026</div>
+  <div style="font-size:11px;color:#475569;margin-top:3px;">Thiết kế bởi: PHẠM THANH PHÚC — TSC0897</div>
+</div>
+
+</div><!-- /page -->
+
+<script>
+// ══════════════════════════════════════════
+//  UTILITIES
+// ══════════════════════════════════════════
+const r3 = v => (isNaN(v)||v===null) ? '0.000' : parseFloat(v).toFixed(3);
+const gv  = id => parseFloat(document.getElementById(id)?.value)||0;
+const setText = (id,val) => { const e=document.getElementById(id); if(e) e.textContent=r3(val); };
+const interp  = (d1,v1,d2,v2,d) => d2===d1 ? v1 : v1+((d-d1)*(v2-v1))/(d2-d1);
+
+const state = {
+  a:{fm:0,mm_raw:0,am:0,apparentTrim:0,fc:0,mc:0,ac:0,fcd:0,mcd:0,acd:0,trueTrim:0,
+     fam:0,mm:0,mmm:0,disp:0,tpc:0,lcf:0,sign1st:'+',corr1st:0,
+     mtcPlus:0,mtcMinus:0,deltaMTC:0,corr2nd:0,rho:1.025,
+     dispTotal:0,densCorr:0,deltaIn:0,wob:0,lbm:0,df:0,dm:0,da:0},
+  d:{fm:0,mm_raw:0,am:0,apparentTrim:0,fc:0,mc:0,ac:0,fcd:0,mcd:0,acd:0,trueTrim:0,
+     fam:0,mm:0,mmm:0,disp:0,tpc:0,lcf:0,sign1st:'+',corr1st:0,
+     mtcPlus:0,mtcMinus:0,deltaMTC:0,corr2nd:0,rho:1.025,
+     dispTotal:0,densCorr:0,deltaOut:0,wob:0,lbm:0,df:0,dm:0,da:0}
+};
+
+// Date init
+(()=>{
+  const n=new Date();
+  const d=String(n.getDate()).padStart(2,'0'),m=String(n.getMonth()+1).padStart(2,'0'),y=n.getFullYear();
+  document.getElementById('currentDateDisplay').textContent=`Ngày ${d}/${m}/${y}`;
+  document.getElementById('calcDate').value=`${y}-${m}-${d}`;
+})();
+
+// ══ TABS ══
+function switchTab(tab){
+  ['arrival','departure','summary'].forEach(t=>{
+    document.getElementById('tab-content-'+t).style.display=t===tab?'block':'none';
+    document.getElementById('tab-'+t).classList.toggle('active',t===tab);
+  });
+  if(tab==='summary') updateSummary();
+}
+
+// ══ LBM ══
+function calcLBM(p){
+  const lbp=gv('lbp'),df=gv(p+'_df'),da=gv(p+'_da');
+  const lbm=lbp-da-df;
+  state[p].df=df; state[p].da=da; state[p].dm=gv(p+'_dm'); state[p].lbm=lbm;
+  setText(p+'_lbm',lbm);
+}
+
+// ══ STEP 1 ══
+function calcStep1(p){
+  const fp=gv(p+'_fp'),fs=gv(p+'_fs'),mp=gv(p+'_mp'),ms=gv(p+'_ms'),ap=gv(p+'_ap'),as_=gv(p+'_as');
+  const fm=(fp+fs)/2, mm_=(mp+ms)/2, am=(ap+as_)/2;
+  state[p].fm=fm; state[p].mm_raw=mm_; state[p].am=am;
+  setText(p+'_fm',fm); setText(p+'_mm_raw',mm_); setText(p+'_am',am);
+  const trim=am-fm; state[p].apparentTrim=trim;
+  setText(p+'_apparentTrim',trim);
+  document.getElementById(p+'_trimStatus').textContent=
+    trim>0.001?'⬇ Chúi lái (Stern trim)':trim<-0.001?'⬆ Chúi mũi (Bow trim)':'✅ Thăng bằng (Even keel)';
+  updateDiagram(p);
+}
+
+// ══ STEP 3 ══
+function calcStep3(p){
+  calcLBM(p);
+  const trim=state[p].apparentTrim, lbm=state[p].lbm;
+  if(!lbm){alert('LBM = 0, vui lòng nhập LBP, df, da!');return;}
+  const df=state[p].df,dm=state[p].dm,da=state[p].da,absTrim=Math.abs(trim);
+  let fc=(df*absTrim)/lbm, mc=(dm*absTrim)/lbm, ac=(da*absTrim)/lbm;
+  if(trim>0){ac=Math.abs(ac);fc=-Math.abs(fc);mc=-Math.abs(mc);}
+  else if(trim<0){ac=-Math.abs(ac);fc=Math.abs(fc);mc=Math.abs(mc);}
+  else{ac=0;fc=0;mc=0;}
+  state[p].fc=fc; state[p].mc=mc; state[p].ac=ac;
+  setText(p+'_fc',fc); setText(p+'_mc',mc); setText(p+'_ac',ac);
+  const fcd=state[p].fm+fc, mcd=state[p].mm_raw+mc, acd=state[p].am+ac;
+  state[p].fcd=fcd; state[p].mcd=mcd; state[p].acd=acd;
+  setText(p+'_fcd',fcd); setText(p+'_mcd',mcd); setText(p+'_acd',acd);
+  const tt=acd-fcd; state[p].trueTrim=tt;
+  setText(p+'_trueTrim',tt);
+  const el=document.getElementById(p+'_trimInfo');
+  if(tt>0.001) el.innerHTML='<span class="badge b-amber">⬇ Chúi lái (Stern trim)</span>';
+  else if(tt<-0.001) el.innerHTML='<span class="badge b-blue">⬆ Chúi mũi (Bow trim)</span>';
+  else el.innerHTML='<span class="badge b-green">✅ Thăng bằng (Even keel)</span>';
+  updateDiagram(p);
+}
+
+// ══ STEP 5–7 ══
+function calcStep57(p){
+  const fcd=state[p].fcd,acd=state[p].acd,mcd=state[p].mcd;
+  const fam=(fcd+acd)/2, mm=(fam+mcd)/2, mmm=(mm+mcd)/2;
+  state[p].fam=fam; state[p].mm=mm; state[p].mmm=mmm;
+  setText(p+'_fam',fam); setText(p+'_mm',mm); setText(p+'_mmm',mmm);
+  document.getElementById(p+'_mmm_display').textContent=r3(mmm);
+  document.getElementById(p+'_mmm_b10').textContent=r3(mmm);
+  document.getElementById(p+'_mmm_plus').textContent=r3(mmm+0.5);
+  document.getElementById(p+'_mmm_minus').textContent=r3(mmm-0.5);
+  document.getElementById(p+'_mmmPlus_label').textContent=r3(mmm+0.5);
+  document.getElementById(p+'_mmmMinus_label').textContent=r3(mmm-0.5);
+}
+
+// ══ STEP 8 ══
+function calcStep8(p){
+  const mmm=state[p].mmm;
+  const disp=interp(gv(p+'_disp_d1'),gv(p+'_disp_v1'),gv(p+'_disp_d2'),gv(p+'_disp_v2'),mmm);
+  const tpc =interp(gv(p+'_tpc_d1'), gv(p+'_tpc_v1'), gv(p+'_tpc_d2'), gv(p+'_tpc_v2'), mmm);
+  const lcf =interp(gv(p+'_lcf_d1'), gv(p+'_lcf_v1'), gv(p+'_lcf_d2'), gv(p+'_lcf_v2'), mmm);
+  state[p].disp=disp; state[p].tpc=tpc; state[p].lcf=lcf;
+  setText(p+'_disp_result',disp); setText(p+'_tpc_result',tpc); setText(p+'_lcf_result',lcf);
+  document.getElementById(p+'_lcfFromB8').textContent=r3(lcf);
+  document.getElementById(p+'_dispFromB8').textContent=r3(disp);
+}
+
+// ══ STEP 9 ══
+function calcStep9(p){
+  const lcf=state[p].lcf, tt=state[p].trueTrim, tpc=state[p].tpc, lbp=gv('lbp')||1;
+  const deeper=document.getElementById(p+'_deeperDraft').value;
+  const lcfPos=document.getElementById(p+'_lcfPosition').value;
+  let sign=1;
+  if(deeper&&lcfPos) sign=(deeper===lcfPos)?1:-1;
+  state[p].sign1st=sign>0?'+':'-';
+  document.getElementById(p+'_1stSign').textContent=sign>0?'+ (Dương)':'− (Âm)';
+  const corr1st=sign*(Math.abs(lcf)*Math.abs(tt)*tpc*100)/lbp;
+  state[p].corr1st=corr1st;
+  setText(p+'_1stCorr',corr1st);
+}
+
+// ══ STEP 10 ══
+function calcStep10(p){
+  const mmm=state[p].mmm, tt=state[p].trueTrim, lbp=gv('lbp')||1;
+  const mtcPlus =interp(gv(p+'_mtcp_d1'),gv(p+'_mtcp_v1'),gv(p+'_mtcp_d2'),gv(p+'_mtcp_v2'),mmm+0.5);
+  const mtcMinus=interp(gv(p+'_mtcm_d1'),gv(p+'_mtcm_v1'),gv(p+'_mtcm_d2'),gv(p+'_mtcm_v2'),mmm-0.5);
+  const deltaMTC=mtcPlus-mtcMinus;
+  const corr2nd =(tt*tt*50*deltaMTC)/lbp;
+  state[p].mtcPlus=mtcPlus; state[p].mtcMinus=mtcMinus;
+  state[p].deltaMTC=deltaMTC; state[p].corr2nd=corr2nd;
+  setText(p+'_mtcPlus',mtcPlus); setText(p+'_mtcMinus',mtcMinus);
+  setText(p+'_deltaMTC',deltaMTC); setText(p+'_2ndCorr',Math.abs(corr2nd));
+}
+
+// ══ STEP 11 ══
+function calcStep11(p){
+  const disp=state[p].disp, c1=state[p].corr1st, c2=Math.abs(state[p].corr2nd);
+  const rho=gv(p+'_rho'), rhoStd=gv('rhoStd')||1.025;
+  const densCorr=((disp+c1+c2)*(rho-rhoStd))/rhoStd;
+  const dispTotal=disp+c1+c2+densCorr;
+  state[p].densCorr=densCorr; state[p].dispTotal=dispTotal; state[p].rho=rho;
+  setText(p+'_densCorr',densCorr); setText(p+'_dispTotal',dispTotal);
+}
+
+// ══ STEP 12 ══
+function calcStep12(p){
+  const dt=state[p].dispTotal, ls=gv('lightShip'), cn=gv('constants');
+  const bl=gv(p+'_ballast'), fo=gv(p+'_fuelOil'), dol=gv(p+'_dieselOil'), fw=gv(p+'_freshWater');
+  document.getElementById(p+'_lightShipDisplay').textContent=r3(ls);
+  document.getElementById(p+'_constantsDisplay').textContent=r3(cn);
+  const wob=dt-ls, delta=wob-bl-fo-dol-fw-cn;
+  state[p].wob=wob;
+  if(p==='a'){state[p].deltaIn=delta; setText('a_wob',wob); setText('a_deltaIn',delta);}
+  else        {state[p].deltaOut=delta;setText('d_wob',wob); setText('d_deltaOut',delta);}
+  updateSummary();
+}
+
+// ══ SUMMARY ══
+function updateSummary(){
+  const aIn=state.a.deltaIn, dOut=state.d.deltaOut, dc=aIn-dOut;
+  setText('sum_a_mmm',state.a.mmm); setText('sum_a_tt',state.a.trueTrim);
+  setText('sum_a_disp',state.a.dispTotal); setText('sum_a_delta',aIn);
+  setText('sum_d_mmm',state.d.mmm); setText('sum_d_tt',state.d.trueTrim);
+  setText('sum_d_disp',state.d.dispTotal); setText('sum_d_delta',dOut);
+  setText('final_deltaIn',aIn); setText('final_deltaOut',dOut); setText('final_deltaCargo',dc);
+  const bill=gv('billWeight'), scale=gv('scaleWeight');
+  document.getElementById('final_bill').textContent=r3(bill);
+  document.getElementById('final_scale').textContent=r3(scale);
+  if(dc!==0&&bill!==0){
+    const diff=dc-bill, pct=(diff/bill)*100;
+    const box=document.getElementById('final_compare_box');
+    const ok=Math.abs(pct)<=0.5;
+    document.getElementById('final_compare').textContent=r3(diff);
+    document.getElementById('final_compare').style.color=ok?'#34d399':'#f87171';
+    document.getElementById('final_compare_pct').textContent=r3(pct)+'%';
+    document.getElementById('final_compare_pct').style.color=ok?'#34d399':'#f87171';
+    document.getElementById('final_compare_status').textContent=ok?'✅ Trong giới hạn cho phép (±0.5%)':'⚠️ Vượt giới hạn cho phép (±0.5%)';
+    document.getElementById('final_compare_status').style.color=ok?'#34d399':'#f87171';
+    box.style.background=ok?'rgba(16,185,129,0.1)':'rgba(244,63,94,0.1)';
+    box.style.borderColor=ok?'rgba(16,185,129,0.3)':'rgba(244,63,94,0.3)';
+  }
+}
+
+// ══ SHIP DIAGRAM ══
+function updateDiagram(p){
+  const fm=state[p].fm,mm_=state[p].mm_raw,am=state[p].am;
+  const fcd=state[p].fcd,mcd=state[p].mcd,acd=state[p].acd;
+  const ctn=document.getElementById('shipDiagram'+(p==='a'?'Arrival':'Departure'));
+  if(!ctn) return;
+  const allVals=[fm,mm_,am,fcd||0,mcd||0,acd||0].filter(v=>v>0);
+  const maxD=allVals.length?Math.max(...allVals):1, minD=allVals.length?Math.min(...allVals):0;
+  const range=(maxD-minD)||0.5;
+  const W=720,H=300, sY=70, sH=110, wY=sY+sH*0.72;
+  function dY(d){ return wY-((d-minD)/range)*(sH*0.78); }
+  const fYr=fm>0?dY(fm):wY, mYr=mm_>0?dY(mm_):wY, aYr=am>0?dY(am):wY;
+  const fYc=fcd>0?dY(fcd):wY, mYc=mcd>0?dY(mcd):wY, aYc=acd>0?dY(acd):wY;
+  const isArr=p==='a';
+  const accentA='#2563eb', accentB=isArr?'#10b981':'#8b5cf6';
+  ctn.innerHTML=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;max-height:260px;" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="sea${p}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0ea5e9" stop-opacity="0.45"/><stop offset="100%" stop-color="#0c4a6e" stop-opacity="0.9"/></linearGradient>
+    <linearGradient id="hull${p}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#334155"/><stop offset="100%" stop-color="#1e293b"/></linearGradient>
+    <linearGradient id="brg${p}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1e40af"/><stop offset="100%" stop-color="#1d4ed8"/></linearGradient>
+    <filter id="glow${p}"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <!-- Sea -->
+  <rect x="0" y="${wY}" width="${W}" height="${H-wY}" fill="url(#sea${p})"/>
+  <!-- Hull -->
+  <path d="M90,${sY} L${W-90},${sY} L${W-55},${sY+sH*0.82} L${W-38},${sY+sH} L55,${sY+sH} L38,${sY+sH*0.82} Z" fill="url(#hull${p})" stroke="${accentA}" stroke-width="1.8"/>
+  <!-- Bow (stern) -->
+  <path d="M${W-55},${sY+sH*0.82} L${W-38},${sY+sH} L${W-18},${sY+sH*0.55} Z" fill="#0f172a" stroke="${accentA}" stroke-width="1.2"/>
+  <!-- Bridge -->
+  <rect x="${W/2-55}" y="${sY-48}" width="110" height="52" rx="5" fill="url(#brg${p})" stroke="${accentA}" stroke-width="1.5"/>
+  <rect x="${W/2-42}" y="${sY-40}" width="19" height="13" rx="2" fill="#bae6fd" opacity="0.9"/>
+  <rect x="${W/2-13}" y="${sY-40}" width="19" height="13" rx="2" fill="#bae6fd" opacity="0.9"/>
+  <rect x="${W/2+16}" y="${sY-40}" width="19" height="13" rx="2" fill="#bae6fd" opacity="0.9"/>
+  <!-- Funnel -->
+  <rect x="${W/2-14}" y="${sY-82}" width="28" height="38" rx="4" fill="#dc2626" stroke="#fca5a5" stroke-width="1.5"/>
+  <rect x="${W/2-10}" y="${sY-86}" width="20" height="8" rx="2" fill="#b91c1c"/>
+  <!-- Wave -->
+  <path d="M20,${wY} Q${W/4},${wY-6} ${W/2},${wY} Q${3*W/4},${wY+6} ${W-20},${wY}" stroke="#38bdf8" stroke-width="1.5" fill="none" opacity="0.7"/>
+  <!-- Raw drafts (dashed) -->
+  ${fm>0?`<line x1="${W-108}" y1="${fYr}" x2="${W-108}" y2="${wY}" stroke="#60a5fa" stroke-width="1.5" stroke-dasharray="5,4" opacity="0.5"/><circle cx="${W-108}" cy="${fYr}" r="4" fill="#60a5fa" opacity="0.5"/>`:''}
+  ${mm_>0?`<line x1="${W/2}" y1="${mYr}" x2="${W/2}" y2="${wY}" stroke="#34d399" stroke-width="1.5" stroke-dasharray="5,4" opacity="0.5"/><circle cx="${W/2}" cy="${mYr}" r="4" fill="#34d399" opacity="0.5"/>`:''}
+  ${am>0?`<line x1="108" y1="${aYr}" x2="108" y2="${wY}" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="5,4" opacity="0.5"/><circle cx="108" cy="${aYr}" r="4" fill="#fbbf24" opacity="0.5"/>`:''}
+  <!-- Corrected drafts (solid, glowing) -->
+  ${fcd>0?`<line x1="${W-108}" y1="${fYc}" x2="${W-108}" y2="${wY}" stroke="#3b82f6" stroke-width="2.5" filter="url(#glow${p})"/><circle cx="${W-108}" cy="${fYc}" r="6" fill="#2563eb" stroke="white" stroke-width="2" filter="url(#glow${p})"/>`:''}
+  ${mcd>0?`<line x1="${W/2}" y1="${mYc}" x2="${W/2}" y2="${wY}" stroke="${accentB}" stroke-width="2.5" filter="url(#glow${p})"/><circle cx="${W/2}" cy="${mYc}" r="6" fill="${accentB}" stroke="white" stroke-width="2" filter="url(#glow${p})"/>`:''}
+  ${acd>0?`<line x1="108" y1="${aYc}" x2="108" y2="${wY}" stroke="#f59e0b" stroke-width="2.5" filter="url(#glow${p})"/><circle cx="108" cy="${aYc}" r="6" fill="#f59e0b" stroke="white" stroke-width="2" filter="url(#glow${p})"/>`:''}
+  <!-- Labels bottom -->
+  <text x="68" y="${H-52}" fill="#fbbf24" font-size="11" font-weight="700" font-family="Inter,sans-serif">AFT (LÁI)</text>
+  <text x="60" y="${H-38}" fill="#fcd34d" font-size="10" font-family="Inter,sans-serif">Am = ${r3(am)} m</text>
+  ${acd>0?`<text x="60" y="${H-25}" fill="#f59e0b" font-size="10" font-family="Inter,sans-serif" font-weight="700">Acd = ${r3(acd)} m</text>`:''}
+  <text x="${W/2-28}" y="${H-52}" fill="#4ade80" font-size="11" font-weight="700" font-family="Inter,sans-serif">MID (GIỮA)</text>
+  <text x="${W/2-28}" y="${H-38}" fill="#86efac" font-size="10" font-family="Inter,sans-serif">Mm = ${r3(mm_)} m</text>
+  ${mcd>0?`<text x="${W/2-28}" y="${H-25}" fill="${accentB}" font-size="10" font-family="Inter,sans-serif" font-weight="700">Mcd = ${r3(mcd)} m</text>`:''}
+  <text x="${W-175}" y="${H-52}" fill="#93c5fd" font-size="11" font-weight="700" font-family="Inter,sans-serif">FORE (MŨI)</text>
+  <text x="${W-175}" y="${H-38}" fill="#bfdbfe" font-size="10" font-family="Inter,sans-serif">Fm = ${r3(fm)} m</text>
+  ${fcd>0?`<text x="${W-175}" y="${H-25}" fill="#3b82f6" font-size="10" font-family="Inter,sans-serif" font-weight="700">Fcd = ${r3(fcd)} m</text>`:''}
+  <!-- Water label -->
+  <text x="28" y="${wY-7}" fill="#38bdf8" font-size="10" font-family="Inter,sans-serif" opacity="0.8">── MỰC NƯỚC ──</text>
+  <!-- Legend -->
+  <line x1="${W-170}" y1="14" x2="${W-150}" y2="14" stroke="#64748b" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="${W-144}" y="18" fill="#94a3b8" font-size="10" font-family="Inter,sans-serif">Mớn thực đọc</text>
+  <line x1="${W-170}" y1="30" x2="${W-150}" y2="30" stroke="${accentA}" stroke-width="2"/>
+  <circle cx="${W-175}" cy="30" r="4" fill="${accentA}" stroke="white" stroke-width="1.5"/>
+  <text x="${W-144}" y="34" fill="#93c5fd" font-size="10" font-family="Inter,sans-serif">Mớn đã hiệu chỉnh</text>
+  </svg>`;
+}
+updateDiagram('a'); updateDiagram('d');
+
+// ══ SYNC LightShip/Constants ══
+['lightShip','constants'].forEach(id=>{
+  document.getElementById(id).addEventListener('input',function(){
+    const v=parseFloat(this.value)||0;
+    ['a','d'].forEach(p=>{
+      const el=document.getElementById(p+'_'+(id==='lightShip'?'lightShipDisplay':'constantsDisplay'));
+      if(el) el.textContent=r3(v);
+    });
+  });
+});
+
+// ══════════════════════════════════════════
+//  PRINT REPORT
+// ══════════════════════════════════════════
+function printReport(type){
+  const ship=document.getElementById('shipName').value||'N/A';
+  const imo =document.getElementById('imoNumber').value||'N/A';
+  const cargo=document.getElementById('cargo').value||'N/A';
+  const port =document.getElementById('portName').value||'N/A';
+  const sv   =document.getElementById('surveyor').value||'N/A';
+  const billW=gv('billWeight'), scaleW=gv('scaleWeight');
+  const lbp  =gv('lbp'), ls=gv('lightShip'), cn=gv('constants');
+  const dv   =document.getElementById('calcDate').value;
+  let ds=dv; if(dv){const pp=dv.split('-');ds=pp[2]+'/'+pp[1]+'/'+pp[0];}
+
+  // ── common styles ──
+  const css=`
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Times+New+Roman:ital,wght@0,400;0,700;1,400&display=swap');
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Times New Roman',Times,serif;font-size:12pt;color:#000;line-height:1.4;background:#fff;}
+    @page{margin:14mm 14mm 20mm 14mm;size:A4;}
+    @page{@bottom-center{content:counter(page);font-family:'Times New Roman',Times,serif;font-size:10pt;color:#555;}}
+    body{counter-reset:page;}
+    table{width:100%;border-collapse:collapse;font-size:11pt;margin-bottom:10px;}
+    th{background:#1F4E79;color:#fff;padding:7px 10px;border:1px solid #1a3a5c;font-weight:700;text-align:left;}
+    td{padding:6px 10px;border:1px solid #cbd5e1;vertical-align:top;}
+    tr:nth-child(even) td{background:#f8fafc;}
+    .val{font-weight:700;color:#1F4E79;}
+    .sec-title{background:#1F4E79;color:#fff;font-weight:700;font-size:12pt;padding:7px 12px;margin:14px 0 6px;border-left:4px solid #f59e0b;letter-spacing:.3px;}
+    .result-row td{background:#e8f4f8;font-weight:700;font-size:12pt;}
+    .final-row td{background:#d1fae5;font-weight:800;font-size:13pt;color:#065f46;}
+    .warn-row td{background:#fef2f2;font-weight:700;color:#991b1b;}
+    .sig-table{width:100%;border-collapse:collapse;margin-top:32px;}
+    .sig-table td{border:none;padding:0 8px;text-align:center;width:33.3%;vertical-align:top;}
+    .sig-name{font-weight:700;font-size:12pt;margin-bottom:2px;}
+    .sig-title{font-size:11pt;font-style:italic;color:#444;margin-bottom:56px;}
+    .sig-sign{font-weight:700;font-size:12pt;border-top:none;}
+    .hdr-divider{border:none;border-top:2px solid #1F4E79;margin:8px auto;width:75%;}
+    @media print{body{margin:0;}page-break-inside:avoid;}
+  </style>`;
+
+  // ── header ──
+  function hdr(sub1,sub2){return `
+  <div style="text-align:center;margin-bottom:12px;">
+    <div style="font-size:12pt;font-weight:normal;letter-spacing:.5px;">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
+    <div style="font-size:12pt;font-style:italic;margin-bottom:6px;">Độc lập – Tự do – Hạnh phúc</div>
+    <hr class="hdr-divider">
+    <div style="font-size:18pt;font-weight:700;color:#1F4E79;margin:8px 0 4px;letter-spacing:1px;">CTY TNHH THÉP TÂY ĐÔ</div>
+    <div style="font-size:14pt;font-weight:700;margin-bottom:4px;">BIÊN BẢN GIÁM ĐỊNH MỚN NƯỚC TÀU</div>
+    <div style="font-size:12pt;font-style:italic;color:#374151;">(${sub2})</div>
+    <hr class="hdr-divider" style="margin-top:10px;">
+  </div>`;}
+
+  // ── info table ──
+  function infoTbl(extra=''){return `
+  <table>
+    <tr><td style="width:28%;font-weight:700;">Tên tàu (Vessel)</td><td class="val">${ship}</td><td style="width:20%;font-weight:700;">IMO Number</td><td class="val">${imo}</td></tr>
+    <tr><td style="font-weight:700;">Mặt hàng (Commodity)</td><td class="val">${cargo}</td><td style="font-weight:700;">Cảng (Port)</td><td class="val">${port}</td></tr>
+    <tr><td style="font-weight:700;">Ngày giám định</td><td class="val">${ds}</td><td style="font-weight:700;">Người giám định</td><td class="val">${sv}</td></tr>
+    <tr><td style="font-weight:700;">LBP</td><td class="val">${r3(lbp)} m</td><td style="font-weight:700;">Mật độ chuẩn ρ<sub>std</sub></td><td class="val">${r3(gv('rhoStd'))} t/m³</td></tr>
+    <tr><td style="font-weight:700;">LightShip</td><td class="val">${r3(ls)} tấn</td><td style="font-weight:700;">Hằng số tàu (Constants)</td><td class="val">${r3(cn)} tấn</td></tr>
+    ${extra}
+  </table>`;}
+
+  // ── 2-col rows ──
+  function rows2(arr){
+    let s='<table>';
+    arr.forEach(([l,v,u])=>{s+=`<tr><td style="width:58%;font-weight:600;">${l}</td><td class="val">${v}</td><td style="width:12%;color:#64748b;font-size:10pt;">${u||''}</td></tr>`;});
+    return s+'</table>';
+  }
+
+  // ── draft readings table ──
+  function draftTbl(p){
+    const fp=r3(parseFloat(document.getElementById(p+'_fp').value)||0);
+    const fs=r3(parseFloat(document.getElementById(p+'_fs').value)||0);
+    const mp=r3(parseFloat(document.getElementById(p+'_mp').value)||0);
+    const ms=r3(parseFloat(document.getElementById(p+'_ms').value)||0);
+    const ap=r3(parseFloat(document.getElementById(p+'_ap').value)||0);
+    const as_=r3(parseFloat(document.getElementById(p+'_as').value)||0);
+    return `<table>
+      <thead><tr><th style="width:25%;">Vị trí</th><th>Mạn Trái (Port)</th><th>Mạn Phải (Stbd)</th><th>Trung bình (Mean)</th></tr></thead>
+      <tbody>
+        <tr><td style="font-weight:700;">Mũi (Fore)</td><td>${fp} m</td><td>${fs} m</td><td class="val">${r3(state[p].fm)} m</td></tr>
+        <tr><td style="font-weight:700;">Giữa (Mid)</td><td>${mp} m</td><td>${ms} m</td><td class="val">${r3(state[p].mm_raw)} m</td></tr>
+        <tr><td style="font-weight:700;">Lái (Aft)</td><td>${ap} m</td><td>${as_} m</td><td class="val">${r3(state[p].am)} m</td></tr>
+      </tbody></table>`;}
+
+  // ── correction rows ──
+  function corrRows(p){
+    const s=state[p];
+    return rows2([
+      ['Khoảng cách df / dm / da',`${r3(s.df)} / ${r3(s.dm)} / ${r3(s.da)}`,'m'],
+      ['LBM = LBP − df − da',r3(s.lbm),'m'],
+      ['Độ chênh mớn biểu kiến (Apparent Trim)',r3(s.apparentTrim),'m'],
+      ['Hiệu chỉnh mũi FC / giữa MC / lái AC',`${r3(s.fc)} / ${r3(s.mc)} / ${r3(s.ac)}`,'m'],
+      ['Mớn mũi đã hiệu chỉnh (Fcd)',r3(s.fcd),'m'],
+      ['Mớn giữa đã hiệu chỉnh (Mcd)',r3(s.mcd),'m'],
+      ['Mớn lái đã hiệu chỉnh (Acd)',r3(s.acd),'m'],
+      ['Trim thực tế (True Trim – TT)',r3(s.trueTrim),'m'],
+      ['Mớn trung bình F&A (FAm)',r3(s.fam),'m'],
+      ['Mớn tổng hợp trung gian (MM)',r3(s.mm),'m'],
+      ['Mớn tra bảng thủy tĩnh (MMM)',r3(s.mmm),'m'],
+    ]);
+  }
+
+  // ── hydrostatic ──
+  function hydroRows(p){
+    const s=state[p];
+    return rows2([
+      ['Lượng chiếm nước nội suy (Displacement)',r3(s.disp),'tấn'],
+      ['Trọng lượng trên mỗi cm chìm (TPC)',r3(s.tpc),'t/cm'],
+      ['Tâm nổi dọc tàu (LCF từ FPP)',r3(s.lcf),'m'],
+    ]);
+  }
+
+  // ── trim & density ──
+  function trimRows(p){
+    const s=state[p];
+    return rows2([
+      ['Hiệu chỉnh Trim lần 1 (1st Trim Correction)',r3(s.corr1st),'tấn'],
+      ['Mớn nội suy phụ MMM+0.5 / MMM−0.5',`${r3(s.mmm+0.5)} / ${r3(s.mmm-0.5)}`,'m'],
+      ['MTC(MMM+0.5) / MTC(MMM−0.5)',`${r3(s.mtcPlus)} / ${r3(s.mtcMinus)}`,'tm/cm'],
+      ['ΔMTC = MTC(+0.5) − MTC(−0.5)',r3(s.deltaMTC),'tm/cm'],
+      ['Hiệu chỉnh Trim lần 2 (2nd Trim Correction)',r3(Math.abs(s.corr2nd)),'tấn'],
+      ['Mật độ nước đo được (ρ)',r3(s.rho),'t/m³'],
+      ['Hiệu chỉnh mật độ (Density Correction)',r3(s.densCorr),'tấn'],
+      ['Lượng chiếm nước sau hiệu chỉnh',r3(s.dispTotal),'tấn'],
+    ]);
+  }
+
+  // ── liquids ──
+  function liquidRows(p){
+    const s=state[p];
+    const bl=parseFloat(document.getElementById(p+'_ballast').value)||0;
+    const fo=parseFloat(document.getElementById(p+'_fuelOil').value)||0;
+    const dol=parseFloat(document.getElementById(p+'_dieselOil').value)||0;
+    const fw=parseFloat(document.getElementById(p+'_freshWater').value)||0;
+    const delta=p==='a'?s.deltaIn:s.deltaOut;
+    const lbl=p==='a'?'Δin – Khối lượng hàng hóa đo mớn (Arrival)':'Δout – Khối lượng hàng hóa đo mớn (Departure)';
+    return `<table>
+      <tr><td style="width:58%;font-weight:600;">Nước dằn (Ballast)</td><td class="val">${r3(bl)} tấn</td></tr>
+      <tr><td style="font-weight:600;">Dầu nhiên liệu (Fuel Oil)</td><td class="val">${r3(fo)} tấn</td></tr>
+      <tr><td style="font-weight:600;">Dầu diesel (Diesel Oil)</td><td class="val">${r3(dol)} tấn</td></tr>
+      <tr><td style="font-weight:600;">Nước ngọt (Fresh Water)</td><td class="val">${r3(fw)} tấn</td></tr>
+      <tr><td style="font-weight:600;">Trọng lượng trên tàu (Weight on Board)</td><td class="val">${r3(s.wob)} tấn</td></tr>
+      <tr class="final-row"><td>${lbl}</td><td>${r3(delta)} tấn</td></tr>
+    </table>`;
+  }
+
+  // ── signature ──
+  function sig(){return `
+  <table class="sig-table">
+    <tr>
+      <td><div class="sig-name">Người lập báo cáo</div><div class="sig-title">(Draft Surveyor)</div><div class="sig-sign">${sv}</div></td>
+      <td><div class="sig-name">Trưởng phòng kỹ thuật</div><div class="sig-title">(Head of Technical Dept.)</div><div class="sig-sign">&nbsp;</div></td>
+      <td><div class="sig-name">Tổng giám đốc</div><div class="sig-title">(General Director)</div><div class="sig-sign">&nbsp;</div></td>
+    </tr>
+  </table>`;}
+
+  function secTitle(t){return `<div class="sec-title">${t}</div>`;}
+
+  function buildDoc(title,sub,body){
+    return `<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"><title>${title}</title>${css}</head><body>
+    ${hdr(title,sub)}
+    ${body}
+    ${sig()}
+    </body></html>`;
+  }
+
+  let html='';
+  if(type==='arrival'){
+    html=buildDoc('Biên bản Arrival – '+ship,'ARRIVAL DRAFT SURVEY',`
+    ${infoTbl()}
+    ${secTitle('I. SỐ LIỆU MỚN NƯỚC ĐỌC TẠI TÀU (DRAFT READINGS)')}
+    ${draftTbl('a')}
+    ${secTitle('II. HIỆU CHỈNH VÀ QUY VỀ MẶT PHẲNG VUÔNG GÓC (DRAFT CORRECTIONS)')}
+    ${corrRows('a')}
+    ${secTitle('III. NỘI SUY BẢNG THỦY TĨNH (HYDROSTATIC INTERPOLATION)')}
+    ${hydroRows('a')}
+    ${secTitle('IV. HIỆU CHỈNH TRIM VÀ MẬT ĐỘ NƯỚC (TRIM & DENSITY CORRECTIONS)')}
+    ${trimRows('a')}
+    ${secTitle('V. TRỌNG LƯỢNG CHẤT LỎNG VÀ KẾT QUẢ (LIQUIDS ON BOARD & RESULT)')}
+    ${liquidRows('a')}`);
+  } else if(type==='departure'){
+    html=buildDoc('Biên bản Departure – '+ship,'DEPARTURE DRAFT SURVEY',`
+    ${infoTbl()}
+    ${secTitle('I. SỐ LIỆU MỚN NƯỚC ĐỌC TẠI TÀU (DRAFT READINGS)')}
+    ${draftTbl('d')}
+    ${secTitle('II. HIỆU CHỈNH VÀ QUY VỀ MẶT PHẲNG VUÔNG GÓC (DRAFT CORRECTIONS)')}
+    ${corrRows('d')}
+    ${secTitle('III. NỘI SUY BẢNG THỦY TĨNH (HYDROSTATIC INTERPOLATION)')}
+    ${hydroRows('d')}
+    ${secTitle('IV. HIỆU CHỈNH TRIM VÀ MẬT ĐỘ NƯỚC (TRIM & DENSITY CORRECTIONS)')}
+    ${trimRows('d')}
+    ${secTitle('V. TRỌNG LƯỢNG CHẤT LỎNG VÀ KẾT QUẢ (LIQUIDS ON BOARD & RESULT)')}
+    ${liquidRows('d')}`);
+  } else {
+    const dc=state.a.deltaIn-state.d.deltaOut;
+    const diff=dc-billW, pct=billW?((diff/billW)*100):0;
+    const ok=Math.abs(pct)<=0.5;
+    html=buildDoc('Tổng hợp Draft Survey – '+ship,'DRAFT SURVEY SUMMARY REPORT',`
+    ${infoTbl(`<tr><td style="font-weight:700;">Khối lượng Bill hàng</td><td class="val">${r3(billW)} tấn</td><td style="font-weight:700;">Khối lượng cân</td><td class="val">${r3(scaleW)} tấn</td></tr>`)}
+    ${secTitle('I. KẾT QUẢ ĐO MỚN TÀU VÀO CẢNG (ARRIVAL)')}
+    ${rows2([
+      ['Mớn tra bảng thủy tĩnh (MMM)',r3(state.a.mmm),'m'],
+      ['Trim thực tế (True Trim)',r3(state.a.trueTrim),'m'],
+      ['Mật độ nước đo được (ρ)',r3(state.a.rho),'t/m³'],
+      ['Lượng chiếm nước sau hiệu chỉnh',r3(state.a.dispTotal),'tấn'],
+      ['Hiệu chỉnh Trim 1 / Trim 2',r3(state.a.corr1st)+' / '+r3(Math.abs(state.a.corr2nd)),'tấn'],
+      ['Hiệu chỉnh mật độ nước',r3(state.a.densCorr),'tấn'],
+      ['Δin – Khối lượng hàng hóa đo mớn (Arrival)',r3(state.a.deltaIn),'tấn'],
+    ])}
+    ${secTitle('II. KẾT QUẢ ĐO MỚN TÀU RỜI CẢNG (DEPARTURE)')}
+    ${rows2([
+      ['Mớn tra bảng thủy tĩnh (MMM)',r3(state.d.mmm),'m'],
+      ['Trim thực tế (True Trim)',r3(state.d.trueTrim),'m'],
+      ['Mật độ nước đo được (ρ)',r3(state.d.rho),'t/m³'],
+      ['Lượng chiếm nước sau hiệu chỉnh',r3(state.d.dispTotal),'tấn'],
+      ['Hiệu chỉnh Trim 1 / Trim 2',r3(state.d.corr1st)+' / '+r3(Math.abs(state.d.corr2nd)),'tấn'],
+      ['Hiệu chỉnh mật độ nước',r3(state.d.densCorr),'tấn'],
+      ['Δout – Khối lượng hàng hóa đo mớn (Departure)',r3(state.d.deltaOut),'tấn'],
+    ])}
+    ${secTitle('III. KẾT QUẢ CUỐI CÙNG VÀ ĐỐI CHIẾU (FINAL RESULT & COMPARISON)')}
+    <table>
+      <tr><th colspan="2">KHỐI LƯỢNG HÀNG HÓA THEO ĐO MỚN NƯỚC</th></tr>
+      <tr><td style="width:65%;font-weight:600;">Δin – Khối lượng đo mớn tàu vào cảng (Arrival)</td><td class="val">${r3(state.a.deltaIn)} tấn</td></tr>
+      <tr><td style="font-weight:600;">Δout – Khối lượng đo mớn tàu rời cảng (Departure)</td><td class="val">${r3(state.d.deltaOut)} tấn</td></tr>
+      <tr class="final-row"><td>Δcargo = Δin − Δout (Khối lượng hàng hóa đo mớn)</td><td>${r3(dc)} tấn</td></tr>
+      <tr><td style="font-weight:600;">Khối lượng theo Bill of Lading</td><td class="val">${r3(billW)} tấn</td></tr>
+      <tr><td style="font-weight:600;">Khối lượng theo cân</td><td class="val">${r3(scaleW)} tấn</td></tr>
+      <tr><td style="font-weight:600;">Chênh lệch hàng đo mớn so với Bill</td><td class="val">${r3(diff)} tấn (${r3(pct)}%)</td></tr>
+      <tr class="${ok?'result-row':'warn-row'}"><td>Đánh giá kết quả</td><td>${ok?'✅ TRONG GIỚI HẠN CHO PHÉP (±0.5%)':'⚠️ VƯỢT GIỚI HẠN CHO PHÉP (±0.5%)'}</td></tr>
+    </table>`);
+  }
+
+  const w=window.open('','_blank','width=960,height=750');
+  w.document.write(html);
+  w.document.close();
+  setTimeout(()=>w.print(),700);
+}
+</script>
+</body>
+</html>
